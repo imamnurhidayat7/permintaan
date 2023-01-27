@@ -22,9 +22,10 @@ class CheckKeycloak
     public function handle($request, Closure $next)
     {
             if(Session::get('id') != ''){
+                $apiURL = env("KEYCLOAK_API_URL", "");
                 $user = User::find(Session::get('id'));
                 //$apiURL = 'https://logindev.atrbpn.go.id/auth/realms/internal-realm/protocol/openid-connect/userinfo';
-                $apiURL = 'https://login.atrbpn.go.id/auth/realms/internal/protocol/openid-connect/userinfo';
+                //$apiURL = 'https://login.atrbpn.go.id/auth/realms/internal/protocol/openid-connect/userinfo';
         
                 $headers = [
                     'Authorization' => 'Bearer '.$user->access_token
