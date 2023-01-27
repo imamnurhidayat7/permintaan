@@ -62,7 +62,9 @@
                                 <label for="basicpill-lastname-input">Role</label>
                                 <select name="role" id="" class="ubahRole form-control" required>
                                     <option value="">Pilih Role</option>
+                                    @if(Session::get('isSuperAdmin'))
                                     <option value="admin">Admin</option>
+                                    @endif
                                     <option value="pelaksana">Pelaksana</option>
                                     <option value="kasi">Kepala Subbidang</option>
                                     <option value="kabid">Kepala Bidang</option>
@@ -111,7 +113,9 @@
                                 <label for="basicpill-lastname-input">Role</label>
                                 <select name="role" class="ubahRole form-control" id="edit_role" required>
                                     <option value="">Pilih Role</option>
+                                    @if(Session::get('isSuperAdmin'))
                                     <option value="admin">Admin</option>
+                                    @endif
                                     <option value="pelaksana">Pelaksana</option>
                                     <option value="kasi">Kepala Subbidang</option>
                                     <option value="kabid">Kepala Bidang</option>

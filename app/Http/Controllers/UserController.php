@@ -19,7 +19,13 @@ use Illuminate\Support\Facades\Cookie;
 class UserController extends Controller
 {
     public function index(){
-        $data['user'] = User::where('role', '!=', '')->where('role', '!=', 'pemohon')->get();
+        if(Session::get('isSuperAdmin')){
+            $data['user'] = User::where('role', '!=', '')->where('role', '!=', 'pemohon')->get();
+        }
+        else{
+            $data['user'] = User::where('role', '!=', '')->where('role', '!=', 'admin')->where('role', '!=', 'pemohon')->get();
+        }
+        
         $data['bidang'] = Bidang::all();
         return view('admin.user.index')->with($data);
     }

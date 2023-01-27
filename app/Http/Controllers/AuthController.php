@@ -113,7 +113,11 @@ class AuthController extends Controller
         $user = User::where('pegawaiid', $detail['atrbpn-profile']['pegawaiid'])->first();
         
         Auth::login($user);
-        //dd($user);
+        
+        if($user->isSuperAdmin == 1){
+            Session::put('isSuperAdmin', true);
+        }
+        
         Session::put('name', $user->name);
         Session::put('id', $user->id);
         Session::put('role', $user->role);
