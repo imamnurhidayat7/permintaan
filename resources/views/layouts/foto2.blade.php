@@ -1,0 +1,1 @@
+<img src="https://simpeg.atrbpn.go.id/app/client/bpn/uploads/siap/foto/{{Auth::user()->foto}}" alt="" class="img-thumbnail rounded-circle">

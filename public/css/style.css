@@ -1,0 +1,60 @@
+.camera-container{
+    width: 50px;
+    height: 50px;
+}
+.hidden{
+    display:none;
+}
+#my_camera{
+    width: 320px;
+    height: 240px;
+}
+th, tr{
+    font-size: 14px;
+}
+
+.card-layanan{
+    background-color:white;
+    color: black;
+}
+
+.card-layanan h5{
+    color: black;
+}
+
+img {
+    max-width: 100%;
+    height: auto !important;
+}
+
+.btn-default{
+    background-color: #F8F8FB;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.hero{
+    max-height: 400px;
+}
+
+@media only screen and (max-width: 768px) {
+    .offcanvas{
+        max-width: 100%;
+    }
+    .hero{
+        min-height: 500px;
+        max-height: 1000px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .offcanvas{
+        width: 700px;
+    }
+}
