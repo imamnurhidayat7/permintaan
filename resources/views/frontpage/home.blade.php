@@ -105,10 +105,11 @@
     @section('script')
     <script>
 
+        var url = {!! json_encode(url('/')) !!}
         $('.btnDetail').on('click', function(e){
             e.preventDefault();
             $('#deskripsi').append($(this).data('deskripsi'));
-            $('#edit_id').attr('href', 'https://permintaan.atrbpn.go.id/layanan/request/'+$(this).data('id'));
+            $('#edit_id').attr('href', url+'/layanan/request/'+$(this).data('id'));
             $('#modalDetail').modal('show');
         });
     
