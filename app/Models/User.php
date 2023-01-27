@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'isSuperAdmin',
         'password',
         'access_token',
         'id_token',
