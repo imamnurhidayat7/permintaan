@@ -25,7 +25,7 @@
                             <select class="form-control select2 filterstatus" name="status">
                                 <option value="">Semua</option>
                                 <option value="Request Diajukan">Request Diajukan</option>
-                                <option value="Request Diajukan">Berkas Lengkap</option>
+                                <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                                 <option value="Sedang Diproses">Sedang Diproses</option>
                                 <option value="Ditolak">Ditolak</option>
                                 <option value="Selesai">Selesai</option>
@@ -66,7 +66,10 @@
                                     @endif
                                 </td>
                                 <td>
-                                <a href="{{url('request/detail', $row->id)}}" class="btn btn-light waves-effect waves-light" role="button"><i class="fa fa-eye"></i> </a>
+                                <a href="{{url('request/detail', $row->id)}}" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>
+                                @if(Session::get('role') == 'admin')
+                                <a href="#" data-id="{{$row->id}}" class="btn btnReAssign btn-success waves-effect waves-light" role="button"><i class="mdi mdi-pencil d-block font-size-16" aria-hidden="true"></i> </a>
+                                @endif
                                 </td>
                 
                             </tr>
@@ -98,7 +101,7 @@
                         </div>
                         <div class="row mt-4 py-4">
                             @foreach($layanan as $row)
-                            <div class="col-md-3 col-sm-12">
+                            <div class="col-md-3 col-sm-12" @if($row->isLayananPusat == 1 && Session::get('isUserPusat') != 1) style="display:none;" @endif>
                                 <div class="card card-layanan overflow-hidden py-3" style="background-color:#D6E4E5">
                                     <div class="card-body pt-0">
                                         <div class="row">
@@ -121,23 +124,28 @@
         </div><!-- /.modal-dialog -->
     </div>
     
-    <div class="modal fade transaction-detailModal show" id="modalTambah" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <form action="{{url('tambah-layanan')}}" method="post">@csrf
+    <div class="modal fade transaction-detailModal show" id="modalAssign" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form action="{{url('tugaskan-request')}}" method="post">@csrf
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="transaction-detailModalLabel">Tambah Layanan</h5>
+                    <h5 class="modal-title" id="transaction-detailModalLabel">Tugaskan Request</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                                <label for="basicpill-lastname-input">Nama Layanan</label>
-                                <input type="text" name="layanan" class="form-control" required="">
+                        <select name="id_user_disposisi" id="" class="form-control" required>
+                            <option value="">Pilih Pelaksana</option>
+                            @foreach($pelaksana as $row)
+                            <option value="{{$row->id}}">{{$row->name}}</option>
+                            @endforeach
+                        </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" name="id" id="assign_id">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -176,6 +184,13 @@
                 return false;
             }
         );
+
+        $('.btnReAssign').on('click', function(e){
+            e.preventDefault();
+            var id = $(this).data('id');
+            $('#assign_id').val(id);
+            $('#modalAssign').modal('show');
+        });
     </script>
     @endsection
     </body>

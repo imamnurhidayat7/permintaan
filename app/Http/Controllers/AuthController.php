@@ -56,8 +56,11 @@ class AuthController extends Controller
         //oracle
         $store = DB::connection('oracle_db');
         $data_simpeg = $store->selectOne("SELECT FOTO, SATKERID FROM SIMPEG_2702.PEGAWAI WHERE NIPBARU = '$nip' ");
-
+        
+        $data['isUserPusat'] = 0;
+        
         if($detail['atrbpn-profile']['namakantor'] == 'Kantor Badan Pertanahan Nasional'){
+            $data['isUserPusat'] = 1;
             //get satker
             if($data_simpeg){
                 $satkerid = substr($data_simpeg->satkerid, 0, 6);
@@ -82,7 +85,8 @@ class AuthController extends Controller
             'pegawaiid' => $detail['atrbpn-profile']['pegawaiid'],
             'kantor' => $kantor,
             'foto'=>$foto,
-            'buat_tiket'=>$detail['atrbpn-profile']['loginpusdatin']
+            'buat_tiket'=>$detail['atrbpn-profile']['loginpusdatin'],
+            'isUserPusat'=>$data['isUserPusat']
         ]);
 
         // if($detail['atrbpn-profile']['loginpusdatin'] == 1){
@@ -121,6 +125,7 @@ class AuthController extends Controller
         Session::put('name', $user->name);
         Session::put('id', $user->id);
         Session::put('role', $user->role);
+        Session::put('isUserPusat', $data['isUserPusat']);
 
         if($user->role == 'admin'){
             Session::put('jabatan', 'Admin');

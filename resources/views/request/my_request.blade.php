@@ -25,7 +25,7 @@
                             <select class="form-control select2 filterstatus" name="status">
                             <option value="">Semua</option>
                                 <option value="Request Diajukan">Request Diajukan</option>
-                                <option value="Request Diajukan">Berkas Lengkap</option>
+                                <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                                 <option value="Sedang Diproses">Sedang Diproses</option>
                                 <option value="Ditolak">Ditolak</option>
                                 <option value="Selesai">Selesai</option>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="row mt-4 py-4">
                             @foreach($layanan as $row)
-                            <div class="col-md-3 col-sm-12">
+                            <div class="col-md-3 col-sm-12" @if($row->isLayananPusat == 1 && Session::get('isUserPusat') != 1) style="display:none;" @endif>
                                 <div class="card card-layanan overflow-hidden py-3" style="background-color:#D6E4E5">
                                     <div class="card-body pt-0">
                                         <div class="row">

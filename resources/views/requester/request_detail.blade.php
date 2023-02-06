@@ -95,6 +95,14 @@
                                             @include('request.form_akses')
                                         @endif
                                     </div>
+                                    @elseif($request->layanan->id == 20)
+                                    <div class="col-lg-12">
+                                            @include('request.form_jaringan')
+                                    </div>
+                                    @elseif($request->layanan->id == 28)
+                                    <div class="col-lg-12">
+                                            @include('request.form_keamanan')
+                                    </div>
                                     @else
                                     @foreach($request->layanan->fields as $row)
                                     @if($row->status_hapus != 1)

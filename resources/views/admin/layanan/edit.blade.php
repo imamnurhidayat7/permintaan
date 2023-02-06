@@ -233,25 +233,25 @@
                     //console.log(res);
 
                     if($('#jenis_input').val() === 'update'){
-                        // $.toast({
-                        //     heading: 'Berhasil',
-                        //     text: 'berhasil mengupdate field!',
-                        //     showHideTransition: 'plain',
-                        //     icon: 'success',
-                        //     position: 'top-right',
-                        //     stack:false,
-                        // });
+                        $.toast({
+                            heading: 'Berhasil',
+                            text: 'berhasil mengupdate field!',
+                            showHideTransition: 'plain',
+                            icon: 'success',
+                            position: 'top-right',
+                            stack:false,
+                        });
                         $('#'+$('#field_id').val()).html(res);
                     }
                     else{
-                        // $.toast({
-                        //     heading: 'Berhasil',
-                        //     text: 'berhasil menambahkan field!',
-                        //     showHideTransition: 'plain',
-                        //     icon: 'success',
-                        //     position: 'top-right',
-                        //     stack:false,
-                        // });
+                        $.toast({
+                            heading: 'Berhasil',
+                            text: 'berhasil menambahkan field!',
+                            showHideTransition: 'plain',
+                            icon: 'success',
+                            position: 'top-right',
+                            stack:false,
+                        });
                         $('#formDiv').append(res);
                     }
 
@@ -344,14 +344,14 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success:function(res){  
                     console.log(res);
-                        // $.toast({
-                        //     heading: 'Berhasil',
-                        //     text: 'berhasil menghapus field!',
-                        //     showHideTransition: 'plain',
-                        //     icon: 'success',
-                        //     position: 'top-right',
-                        //     stack:false,
-                        // });
+                        $.toast({
+                            heading: 'Berhasil',
+                            text: 'berhasil menghapus field!',
+                            showHideTransition: 'plain',
+                            icon: 'success',
+                            position: 'top-right',
+                            stack:false,
+                        });
 
                         $('#'+id).remove();
 

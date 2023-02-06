@@ -11,7 +11,7 @@
                             <h4 class="mb-0"></h4>
                         </div>
                     </div>
-                    <form action="{{url('tambah-akses')}}" method='post' class="outer-repeater" enctype="multipart/fomr-data">@csrf
+                    <form action="{{url('tambah-akses')}}" method='post' class="outer-repeater" enctype="multipart/form-data">@csrf
                         <div class="row outer" data-repeater-list="outer-group">
                         <div data-repeater-item class="outer">
                             <div class="row">
@@ -22,6 +22,7 @@
                                         <option value="">Pilih Jenis Layanan</option>
                                         <option value="VPN">VPN</option>
                                         <option value="Akses Jaringan">Akses Jaringan</option>
+                                        <!-- <option value="Lainnya">Lainnya</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-2">
@@ -33,7 +34,46 @@
                                     </select>
                                 </div>
                             </div>
+                            <div id="lainnya_internal">
+                                <div class="col-md-12 mb-2">
+                                    <label for="">Keperluan*</label>
+                                    <textarea name="keperluan" id="" cols="30" rows="3" class="form-control" required>
+                                    </textarea>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                <label for="">Surat Rekomendasi/ Nota Dinas*</label>
+                                <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
+                                </div>
+                            </div>
+                            <div id="lainnya_pihak3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Nama Pekerjaan*</label>
+                                        <input type="text" name="nama_pekerjaan" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Perusahaan / Vendor*</label>
+                                        <input type="text" name="perusahaan" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Tanggal Mulai*</label>
+                                        <input autocomplete="off" type="text" id="datepicker3" name="tanggal_mulai" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Tanggal Selesai*</label>
+                                        <input autocomplete="off" type="text" id="datepicker4" name="tanggal_selesai" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                    <label for="">NDA*</label>
+                                    <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
+                                    </div>
+                                </div>
+                            </div>
                             <div id="internal">
+                                <div class="col-md-12 mb-2">
+                                    <label for="">NIP*</label>
+                                    <input type="text" name="nip" class="form-control" required>
+                                </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">Peralatan yang digunakan*</label>
                                     <input type="text" name="peralatan" class="form-control" required>
@@ -44,9 +84,7 @@
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">IP yang ingin diakses*</label>
-                                    <textarea name="ip_address" id="" cols="30" rows="3" class="form-control">
-
-                                    </textarea>
+                                    <textarea name="ip_address" id="" cols="30" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>
                             <div id="pihak3">
@@ -122,7 +160,8 @@
     <script>
         $('#internal').hide();
         $('#pihak3').hide();
-
+        $('#lainnya_internal').hide();
+        $('#lainnya_pihak3').hide();
         // set default dates
         var start = new Date();
         // set end date to max one year period:
@@ -131,7 +170,6 @@
 
         $('#datepicker1').datepicker({
             format: 'yyyy/mm/dd',
-            startDate : start,
             endDate   : end,
             autoclose : true,
         }).on('changeDate', function(){
@@ -149,25 +187,97 @@
             // set the "fromDate" end to not be later than "toDate" starts:
             $('#datepicker1').datepicker('setEndDate', new Date($(this).val()));
         });
-        
-        $('#kategori').on('change', function(){
-            //alert('a');
-            var type = $(this).val();
 
-            if(type == ''){
-                $('#internal').hide().find(':input').prop('readonly', true);
-                $('#pihak3').hide().find(':input').prop('readonly', true);
-            }
-            else if(type == 'Internal'){
-                $('#internal').show().find(':input').prop('readonly', false);
-                $('#pihak3').hide().find(':input').prop('readonly', true);
+        $('#datepicker3').datepicker({
+            format: 'yyyy/mm/dd',
+            endDate   : end,
+            autoclose : true,
+        }).on('changeDate', function(){
+            // set the "toDate" start to not be later than "fromDate" ends:
+            $('#datepicker4').datepicker('setStartDate', new Date($(this).val()));
+        });
+
+        $('#datepicker4').datepicker({
+            format: 'yyyy/mm/dd',
+            startDate : start,
+            endDate   : end,
+            autoclose : true,
+        // update "fromDate" defaults whenever "toDate" changes
+        }).on('changeDate', function(){
+            // set the "fromDate" end to not be later than "toDate" starts:
+            $('#datepicker3').datepicker('setEndDate', new Date($(this).val()));
+        });
+        
+        $('#type').on('change', function(){
+            $('#kategori').val('');
+            $('#internal').hide().find(':input').prop('disabled', true);
+            $('#pihak3').hide().find(':input').prop('disabled', true);
+            $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+            $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+        });
+
+        $('#kategori').on('change', function(){
+            var jenis = $('#type').val();
+
+            if(jenis === ''){
+                alert('Pilih Jenis Layanan terlebih dahulu');
+                $(this).val('');
+                $('#internal').hide().find(':input').prop('disabled', true);
+                $('#pihak3').hide().find(':input').prop('disabled', true);
+                $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
             }
             else{
-                $('#internal').hide().find(':input').prop('readonly', true);
-                $('#pihak3').show().find(':input').prop('readonly', false);
+                //alert('a');
+                var type = $(this).val();
+
+                if(jenis == 'Lainnya'){
+
+                    if(type == ''){
+                        $('#internal').hide().find(':input').prop('disabled', true);
+                        $('#pihak3').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                    }
+                    else if (type == 'Internal'){
+                        $('#internal').hide().find(':input').prop('disabled', true);
+                        $('#pihak3').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_internal').show().find(':input').prop('disabled', false);
+                        $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                        
+                    }
+                    else if (type == 'Pihak Ketiga'){
+                        $('#internal').hide().find(':input').prop('disabled', true);
+                        $('#pihak3').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_pihak3').show().find(':input').prop('disabled', false);
+                    }
+            
+                }
+                else{
+                    if(type == ''){
+                        $('#internal').hide().find(':input').prop('disabled', true);
+                        $('#pihak3').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                    }
+                    else if(type == 'Internal'){
+                        $('#internal').show().find(':input').prop('disabled', false);
+                        $('#pihak3').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                    }
+                    else{
+                        $('#internal').hide().find(':input').prop('disabled', true);
+                        $('#pihak3').show().find(':input').prop('disabled', false);
+                        $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                        $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                    }
+                }
             }
             
         });
+
     </script>
     @endsection
     </body>

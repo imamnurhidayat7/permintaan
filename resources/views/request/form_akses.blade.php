@@ -18,6 +18,14 @@
     </div>
     @if($akses->kategori == 'Internal')
     @foreach($akses->userAkses as $row)
+    <div class="col-md-6 mb-2">
+        <label for="">Nama</label>
+        <input type="text" name="nama" value="{{$row->nama}}" disabled class="form-control" required>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="">Email</label>
+        <input type="text" name="nama" value="{{$row->email}}" disabled class="form-control" required>
+    </div>
     <div class="col-md-12 mb-2">
         <label for="">Peralatan yang digunakan*</label>
         <input type="text" name="peralatan" value="{{$row->peralatan}}" disabled class="form-control" required>

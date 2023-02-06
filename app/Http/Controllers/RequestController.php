@@ -11,6 +11,8 @@ use App\Models\Request as Req;
 use App\Models\RequestServer;
 use App\Models\RequestVA;
 use App\Models\RequestAkses;
+use App\Models\RequestJaringan;
+use App\Models\RequestKeamananSiber;
 use App\Models\RequestEmail;
 use App\Models\DetailRequestAkses;
 use App\Models\DetailRequestEmail;
@@ -28,6 +30,7 @@ use Illuminate\Support\Facades\DB;
 use File;
 use App\Events\Notification as Notif;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use PDF;
 
 class RequestController extends Controller{
 
@@ -48,6 +51,7 @@ class RequestController extends Controller{
         
         $data['request'] = Req::with('user')->with('pelaksana')->with('layanan.fields')->with('meta')->get();
         $data['layanan'] = Layanan::where('status', 1)->get();
+        $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
         //dd($data);
         return view('request.list')->with($data);
     }
@@ -55,7 +59,8 @@ class RequestController extends Controller{
     public function showRequestAssignToMe(){
         $data['layanan'] = Layanan::where('status', 1)->get();
         $data['request'] = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Selesai')->get();
-  
+        $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
+        
         return view('request.list')->with($data);
     }
 
@@ -76,6 +81,12 @@ class RequestController extends Controller{
         }
         if($data['request']->layanan->id == 29){
             $data['va'] = RequestVA::where('id_request', $data['request']->id)->first();
+        }
+        if($data['request']->layanan->id == 20){
+            $data['jaringan'] = RequestJaringan::where('id_request', $data['request']->id)->first();
+        }
+        if($data['request']->layanan->id == 28){
+            $data['keamanan'] = RequestKeamananSiber::where('id_request', $data['request']->id)->first();
         }
 
         foreach($data['user'] as $row){
@@ -103,6 +114,11 @@ class RequestController extends Controller{
     public function requestLayanan($id){
         $data['field'] = LayananField::where('layanan_id', $id)->orderBy('id', 'asc')->get();
         $data['layanan'] = Layanan::find($id);
+
+        if($data['layanan']->isLayananPusat == 1 && Session::get('isUserPusat') != 1){
+            Alert::error('Layanan ini hanya bisa diakses oleh pegawai Kantor Pusat');
+            return redirect()->back();
+        }
 
         if($data['layanan']->status != 1){
             Alert::error('Status layanan tidak aktif');
@@ -153,23 +169,6 @@ class RequestController extends Controller{
                 return redirect()->back();
             }
     
-            // $field = LayananField::where('layanan_id', $data['id'])->get();
-
-            // foreach($field as $row){
-
-            //     if(isset($data[$row->nama])){
-            //         $meta = LayananMeta::create([
-            //             'nama' => $row->nama,
-            //             'value' => $data[$row->nama],
-            //             'request_id' => $insert_req->id,
-            //         ]);
-    
-            //         if(!$meta){
-            //             Alert::error('Gagal membuat request!');
-            //             return redirect()->back();
-            //         }
-            //     }
-            // }
             $type = '';
             foreach ($data as $key => $part) {
                 if($key != '_token' && $key != 'id' && $key != 'jenis'){
@@ -282,6 +281,27 @@ class RequestController extends Controller{
         return redirect('my-request/detail/'.$id_req);
     }
 
+    public function reassignRequest(Request $request){
+        $data = $request->all();
+        foreach($data as $key => $value){
+            $data[$key] = amankan($value);
+        }
+
+        DB::transaction(function() use ($data){
+            $update = Req::find($data['id']);
+            $update->fill($data);
+            $update->save();
+
+            if($update){
+                Alert::success('Berhasil menugaskan request');
+            }
+
+            return '';
+        });
+
+        return redirect('request');
+    }
+
     public function showMyRequest(){
         $data['request'] = Req::where('user_id', Session::get('id'))->get();
         $data['layanan'] = Layanan::where('status', 1)->get();
@@ -311,6 +331,12 @@ class RequestController extends Controller{
         if($data['request']->layanan->id == 29){
             $data['va'] = RequestVA::where('id_request', $data['request']->id)->first();
         }
+        if($data['request']->layanan->id == 20){
+            $data['jaringan'] = RequestJaringan::where('id_request', $data['request']->id)->first();
+        }
+        if($data['request']->layanan->id == 28){
+            $data['keamanan'] = RequestKeamananSiber::where('id_request', $data['request']->id)->first();
+        }
         //dd($data);
         return view('requester.request_detail')->with($data);
     }
@@ -334,7 +360,7 @@ class RequestController extends Controller{
 
             if($update->id_user_disposisi == $layanan->id_pic){
                 $data['tahapan'] = 'Menunggu Approval';
-                $data['status'] = 'Berkas Lengkap';
+                $data['status'] = 'Menunggu Persetujuan';
             }
             elseif($update->id_user_disposisi == $layanan->id_pelaksana){
                 $data['tahapan'] = 'Menunggu Pengecekan Berkas';
@@ -712,6 +738,12 @@ class RequestController extends Controller{
         $id_req = DB::transaction(function() use ($data, $request){
         $no_req = IdGenerator::generate(['table' => 'request', 'field'=>'no_req', 'length' => 12, 'prefix' =>'REQ-']);
         $layanan = Layanan::find($data['id']);
+        
+        // if($layanan->isLayananPusat == 1 && Session::get('isUserPusat') != 1){
+        //     Alert::error('Layanan ini hanya bisa diakses oleh pegawai Kantor Pusat');
+        //     return redirect()->back();
+        // }
+
         foreach(request()->allFiles() as $row => $value){
             
             $file = uniqid().'_'.$value->getClientOriginalName();
@@ -872,7 +904,30 @@ class RequestController extends Controller{
 
     public function tambahAkses(Request $request){
         $data = $request['outer-group'][0];
-        //dd($data);
+
+        if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
+            $nip = $data['nip'];
+            $db = DB::connection('oracle_db');
+            $check_email = $db->selectOne("SELECT NAMA_LENGKAP, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$nip' ");
+            if($check_email){
+                if($check_email->email != null){
+                    $validasi = explode('@', $check_email->email);
+                    if($validasi[1] == 'atrbpn.go.id'){
+                        $data['email'] = $check_email->email;
+                        $data['nama'] = $check_email->nama_lengkap;
+                    }
+                    else{
+                        Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
+                        return redirect()->back();
+                    }
+                }
+            }
+            else{
+                Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
+                return redirect()->back();
+            }
+        }
+
         $id_req = DB::transaction(function() use ($data, $request){
         
         $no_req = IdGenerator::generate(['table' => 'request', 'field'=>'no_req', 'length' => 12, 'prefix' =>'REQ-']);
@@ -904,26 +959,52 @@ class RequestController extends Controller{
         $data['id_request'] = $insert_req->id;
 
         $akses = RequestAkses::create($data);
+        $user = User::find(Session::get('id'));
+        $kasi = User::find($layanan->id_pic);
+
         if($akses){
-            if($data['kategori'] == 'Pihak Ketiga'){
-                for($i=0; $i<count($data['inner-group']); $i++){
+            if($data['jenis'] == 'VPN' || $data['jenis'] == 'Akses Jaringan'){
+                if($data['kategori'] == 'Pihak Ketiga'){
+                    for($i=0; $i<count($data['inner-group']); $i++){
+                        DetailRequestAkses::create([
+                            'nama' => $data['inner-group'][$i]['nama'],
+                            'peralatan'=>$data['inner-group'][$i]['peralatan'],
+                            'ip_address'=>$data['inner-group'][$i]['ip_address'],
+                            'mac_address'=>$data['inner-group'][$i]['mac_address'],
+                            'id_request_akses'=>$akses->id
+                        ]);
+                    }
+                }
+                else{
                     DetailRequestAkses::create([
-                        'nama' => $data['inner-group'][$i]['nama'],
-                        'peralatan'=>$data['inner-group'][$i]['peralatan'],
-                        'ip_address'=>$data['inner-group'][$i]['ip_address'],
-                        'mac_address'=>$data['inner-group'][$i]['mac_address'],
+                        'nama' => $data['nama'],
+                        'email' => $data['email'],
+                        'nip' => $data['nip'],
+                        'peralatan'=>$data['peralatan'],
+                        'ip_address'=>$data['ip_address'],
+                        'mac_address'=>$data['mac_address'],
                         'id_request_akses'=>$akses->id
                     ]);
+                    // $data['created_at'] = convert_date(date('Y-m-d'));
+                    // $data['nama'] = $user->name;
+                    // $data['pegawaiid'] = $user->pegawaiid;
+                    // $data['kantor'] = $user->kantor;
+                    // $data['pegawaiid'] = $user->pegawaiid;
+                    // $data['email'] = $user->email;
+                    // $data['nama_kasi'] = $kasi->name;
+                    // $data['nip_kasi'] = $kasi->pegawaiid;
+                    // $data['jabatan_kasi'] = 'Kepala Subbidang Infrastruktur TI';
+                    // $pdf = PDF::loadView('template.form_akses_internal', ['data' => $data])->setPaper('A4', 'potrait');;
+                    // file_put_contents(public_path('dokumen').'/'.date('Y-m-d').'dokumen.pdf', $pdf->download()->getOriginalContent());
                 }
             }
+        }
+        else{
+            if($data['kategori'] == 'Pihak Ketiga'){
+
+            }
             else{
-                DetailRequestAkses::create([
-                    'nama' => Session::get('name'),
-                    'peralatan'=>$data['peralatan'],
-                    'ip_address'=>$data['ip_address'],
-                    'mac_address'=>$data['mac_address'],
-                    'id_request_akses'=>$akses->id
-                ]);
+
             }
         }
 
@@ -1171,6 +1252,154 @@ class RequestController extends Controller{
         return redirect('request/detail/'.$data['id_request']);
 
 
+    }
+
+    public function tambahJaringan(Request $request){
+        $data = $request->all();
+        foreach($data as $key => $value){
+            $data[$key] = $this->amankan($value);
+        }
+
+        $id_req = DB::transaction(function() use ($data, $request){
+        $no_req = IdGenerator::generate(['table' => 'request', 'field'=>'no_req', 'length' => 12, 'prefix' =>'REQ-']);
+        $layanan = Layanan::find($data['id']);
+        foreach(request()->allFiles() as $row => $value){
+            
+            $file = uniqid().'_'.$value->getClientOriginalName();
+            $value->move(public_path('uploads'), $file);
+            $data[$row] = $file;
+            
+        }
+
+        ///dd($request->except('_token'));
+
+        $insert_req = Req::create([
+            'layanan_id' => $data['id'],
+            'user_id' => Session::get('id'),
+            'status' => 'Request Diajukan',
+            'tahapan' => 'Menunggu Pengecekan Berkas',
+            'no_req' => $no_req,
+            'jenis' => $data['jenis'],
+            'id_user_disposisi' => $layanan->id_pelaksana
+        ]);
+
+        if(!$insert_req){
+            Alert::error('Gagal membuat request!');
+            return redirect()->back();
+        }
+
+        $data['id_request'] = $insert_req->id;
+
+        $insert2 = RequestJaringan::create($data);
+        
+        $riwayat = Riwayat::create([
+            'id_request'=> $insert_req->id,
+            'tahapan'=> 'Request dibuat'
+        ]);
+        
+        $layanan = Layanan::find($data['id']);
+        $cust = User::where('id', $layanan->id_pic)->get();
+        $pemohon = User::where('id', Session::get('id'))->first();
+
+        $pesan = $pemohon->name.' mengajukan request permintaan layanan';
+        $judul = 'Request Baru';
+        $url = 'request/detail/'.$insert_req->id;
+
+        //event(new Notif($pesan, $judul, $url, date('Y-m-d H:i:s'), $layanan->id_pelaksana));
+        $pemberitahuan = Pemberitahuan::create([
+            'pesan' => $pesan,
+            'judul' => $judul,
+            'url' => $url,
+            'id_user' => $layanan->id_pelaksana,
+            'status' => 0
+        ]);
+
+        if(!$pemberitahuan){
+            Alert::error('Gagal membuat request!');
+            return redirect()->back();
+        }
+
+        return $insert_req->id;
+        
+    
+        });
+        
+        Alert::success('Permintaan Request Berhasil!');
+        return redirect('my-request/detail/'.$id_req);
+    }
+
+    public function tambahKeamananSiber(Request $request){
+        $data = $request->all();
+        foreach($data as $key => $value){
+            $data[$key] = $this->amankan($value);
+        }
+
+        $id_req = DB::transaction(function() use ($data, $request){
+        $no_req = IdGenerator::generate(['table' => 'request', 'field'=>'no_req', 'length' => 12, 'prefix' =>'REQ-']);
+        $layanan = Layanan::find($data['id']);
+        foreach(request()->allFiles() as $row => $value){
+            
+            $file = uniqid().'_'.$value->getClientOriginalName();
+            $value->move(public_path('uploads'), $file);
+            $data[$row] = $file;
+            
+        }
+
+        ///dd($request->except('_token'));
+
+        $insert_req = Req::create([
+            'layanan_id' => $data['id'],
+            'user_id' => Session::get('id'),
+            'status' => 'Request Diajukan',
+            'tahapan' => 'Menunggu Pengecekan Berkas',
+            'no_req' => $no_req,
+            'jenis' => $data['jenis'],
+            'id_user_disposisi' => $layanan->id_pelaksana
+        ]);
+
+        if(!$insert_req){
+            Alert::error('Gagal membuat request!');
+            return redirect()->back();
+        }
+
+        $data['id_request'] = $insert_req->id;
+
+        $insert2 = RequestKeamananSiber::create($data);
+        
+        $riwayat = Riwayat::create([
+            'id_request'=> $insert_req->id,
+            'tahapan'=> 'Request dibuat'
+        ]);
+        
+        $layanan = Layanan::find($data['id']);
+        $cust = User::where('id', $layanan->id_pic)->get();
+        $pemohon = User::where('id', Session::get('id'))->first();
+
+        $pesan = $pemohon->name.' mengajukan request permintaan layanan';
+        $judul = 'Request Baru';
+        $url = 'request/detail/'.$insert_req->id;
+
+        //event(new Notif($pesan, $judul, $url, date('Y-m-d H:i:s'), $layanan->id_pelaksana));
+        $pemberitahuan = Pemberitahuan::create([
+            'pesan' => $pesan,
+            'judul' => $judul,
+            'url' => $url,
+            'id_user' => $layanan->id_pelaksana,
+            'status' => 0
+        ]);
+
+        if(!$pemberitahuan){
+            Alert::error('Gagal membuat request!');
+            return redirect()->back();
+        }
+
+        return $insert_req->id;
+        
+    
+        });
+        
+        Alert::success('Permintaan Request Berhasil!');
+        return redirect('my-request/detail/'.$id_req);
     }
 }
 

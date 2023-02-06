@@ -62,7 +62,7 @@
                             </select>
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label for="">Surat Permohonan / Nota Dinas*</label>
+                            <label for="">Surat Permohonan / Nota Dinas / Dokumen Hasil VA*</label>
                             <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
                         </div>
                         <div id="server">

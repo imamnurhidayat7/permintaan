@@ -14,7 +14,7 @@
                         
                        
                         <!-- <a class="btn btn-success btn-sm waves-effect mt-2 mr-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalEdit" data-tooltip="tooltip" title="Pesan"><i class="mdi mdi-wechat d-block font-size-16"></i></a> --> 
-                        @if($request->layanan->pelaksana->id == Session::get('id'))
+                        @if($request->id_user_disposisi == Session::get('id'))
                         <a class="btn btn-info btn-sm waves-effect mt-2 mr-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalUbahStatus" data-tooltip="tooltip" title="Pesan"><i class="mdi mdi-wechat d-block font-size-16"></i></a>    
                         @endif
                         <!-- <a class="btn btn-primary btn-sm waves-effect mt-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalEskalasi"><i class="mdi mdi-pencil d-block font-size-16"></i> </a> -->
@@ -63,6 +63,14 @@
                                     <div class="col-lg-12">
                                             @include('request.form_va')
                                     </div>
+                                    @elseif($request->layanan->id == 20)
+                                    <div class="col-lg-12">
+                                            @include('request.form_jaringan')
+                                    </div>
+                                    @elseif($request->layanan->id == 28)
+                                    <div class="col-lg-12">
+                                            @include('request.form_keamanan')
+                                    </div>
                                     @else
                                     @foreach($request->layanan->fields as $row)
                                     @if($row->status_hapus != 1)
@@ -89,7 +97,7 @@
                                     @endif
                                 </div>
                             </div>
-                            @if($request->status == 'Berkas Lengkap' && Session::get('id') == $request->layanan->id_pic)
+                            @if($request->status == 'Menunggu Persetujuan' && Session::get('id') == $request->layanan->id_pic)
                             <div class="text-center">
                                 <a class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalSetuju" href="#">Setujui Permintaan</a>
                                 <a class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalTolak" href="#">Tolak Permintaan</a>
@@ -165,7 +173,7 @@
                             </div>
                             <div class="p-3 chat-input-section">
                                 @if($request->status == 'Sedang Diproses' || $request->status == 'Ditunda' || $request->status == 'Request Diajukan')
-                                @if(Session::get('id') == $request->id_user_disposisi && Session::get('role') == 'pelaksana')
+                                @if(Session::get('id') == $request->id_user_disposisi && Session::get('role') != 'kasi')
                                 <form action="{{url('tambah-disposisi')}}" class="myForm" method="post" enctype="multipart/form-data">@csrf
                                     <div class="row">
                                         <div class="col">
@@ -328,6 +336,9 @@
                                             <option value="Sedang Diproses" @if($request->status == 'Sedang Diproses') selected @endif>Sedang Diproses</option>  
                                             <option value="Ditunda" @if($request->status == 'Ditunda') selected @endif>Ditunda</option>
                                             <option value="Selesai" @if($request->status == 'Selesai') selected @endif>Selesai</option>
+                                            @if($request->layanan->id == 27)
+                                            <option value="Ditolak" @if($request->status == 'Ditolak') selected @endif>Ditolak</option>
+                                            @endif
                                             @endif
                                         </select>
                                 </div>
@@ -412,12 +423,12 @@
                         <div class="modal-footer">
                             <input type="hidden" name="id_request" value="{{$request->id}}">
                             <input type="hidden" name="id_pengirim" value="{{Session::get('id')}}">
-                            @if($request->status == 'Berkas Lengkap')
+                            @if($request->status == 'Menunggu Persetujuan')
                             <input type="hidden" name="status" value="Sedang Diproses">
                             <input type="hidden" name="tahapan" value="Ditugaskan ke Pelaksana">
                             <input type="hidden" name="jenis" value="2">
                             @elseif($request->status == 'Request Diajukan')
-                            <input type="hidden" name="status" value="Berkas Lengkap">
+                            <input type="hidden" name="status" value="Menunggu Persetujuan">
                             <input type="hidden" name="tahapan" value="Menunggu Approval">
                             <input type="hidden" name="jenis" value="1">
                             @endif

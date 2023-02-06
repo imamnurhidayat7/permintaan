@@ -82,7 +82,7 @@
                                     @endif
                                 </div>
                             </div>
-                            @if($request->status == 'Berkas Lengkap' && Session::get('id') == $request->layanan->id_pic)
+                            @if($request->status == 'Menunggu Persetujuan' && Session::get('id') == $request->layanan->id_pic)
                             <div class="text-center">
                                 <a class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalSetuju" href="#">Setujui Permintaan</a>
                                 <a class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#modalTolak" href="#">Tolak Permintaan</a>

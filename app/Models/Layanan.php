@@ -17,7 +17,10 @@ class Layanan extends Model
         'icon',
         'id_pic',
         'id_bidang',
-        'id_pelaksana'
+        'id_pelaksana',
+        'generate',
+        'file',
+        'isLayananPusat'
     ];
 
     

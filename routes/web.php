@@ -30,6 +30,9 @@ Route::get('login', [AuthController::class, 'showLoginPage'])->name('login');
 // Route::get('logout', [Keycloak::class, 'logout'])->name('logout');
 //Route::get('callback', [Keycloak::class, 'callback'])->name('keycloak.callback');
 Route::get('layanan/{id}', [DataController::class, 'showDetailLayanan']);
+Route::get('template', function () {
+    return view('template.form_akses_internal', ['name' => 'James']);
+});
 
 
 Route::group(['middleware' => 'checkKeycloak'], function () {
@@ -69,12 +72,14 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
 
     //request
     Route::get('layanan/request/{id}', [RequestController::class, 'requestLayanan'])->middleware('checkRole:pemohon');
-    Route::post('tambah-user-email', [RequestController::class, 'tambahEmailUser'])->middleware('checkRole:pelaksana');
+    Route::post('tambah-user-email', [RequestController::class, 'tambahEmailUser'])->middleware('checkRole:pelaksana,admin');
     Route::post('tambah-request', [RequestController::class, 'addRequest'])->middleware('checkRole:pemohon');
     Route::post('tambah-server', [RequestController::class, 'tambahServer'])->middleware('checkRole:pemohon');
     Route::post('tambah-va', [RequestController::class, 'tambahVA'])->middleware('checkRole:pemohon');
     Route::post('tambah-email', [RequestController::class, 'tambahEmail'])->middleware('checkRole:pemohon');
     Route::post('tambah-akses', [RequestController::class, 'tambahAkses'])->middleware('checkRole:pemohon');
+    Route::post('tambah-jaringan', [RequestController::class, 'tambahJaringan'])->middleware('checkRole:pemohon');
+    Route::post('tambah-keamanan-siber', [RequestController::class, 'tambahKeamananSiber'])->middleware('checkRole:pemohon');
     Route::post('update-request', [RequestController::class, 'updateRequest'])->middleware('checkRole:pemohon');
     Route::get('my-request', [RequestController::class, 'showMyRequest'])->middleware('checkRole:pemohon');
     Route::get('my-request/detail/{id}', [RequestController::class, 'detailRequest'])->middleware('checkRole:pemohon');
@@ -84,8 +89,8 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::post('tolak-request', [RequestController::class, 'tolakRequest'])->middleware('checkRole:admin,kasi,pelaksana');
 
     //catatan
-    Route::post('tambah-catatan', [RequestController::class, 'tambahCatatan'])->middleware('checkRole:pemohon,customerservice,pelaksana');
-    Route::post('tambah-disposisi', [RequestController::class, 'tambahDisposisi'])->middleware('checkRole:customerservice,pelaksana,kasi,kabid,kapus');
+    Route::post('tambah-catatan', [RequestController::class, 'tambahCatatan'])->middleware('checkRole:pemohon,customerservice,pelaksana,admin');
+    Route::post('tambah-disposisi', [RequestController::class, 'tambahDisposisi'])->middleware('checkRole:customerservice,pelaksana,kasi,kabid,kapus,admin');
 
     //user
     Route::get('admin/users', [UserController::class, 'index'])->middleware('checkRole:admin');
@@ -95,7 +100,7 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     //cs
     Route::get('cs/dashboard', [PageController::class, 'dashboard_cs'])->middleware('checkRole:customerservice');
     Route::get('cs/request', [RequestController::class, 'showRequestList'])->middleware('checkRole:customerservice');
-    Route::post('/request/ubah-status', [RequestController::class, 'ubahStatusRequest'])->middleware('checkRole:pelaksana');
+    Route::post('/request/ubah-status', [RequestController::class, 'ubahStatusRequest'])->middleware('checkRole:pelaksana,admin');
     Route::get('cs/request-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:customerservice');
 
     //kasi
@@ -119,6 +124,7 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::get('pelaksana/request-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:pelaksana');
 
     Route::get('request', [RequestController::class, 'showRequestList'])->middleware('checkRole:admin');
+    Route::post('tugaskan-request', [RequestController::class, 'reassignRequest'])->middleware('checkRole:admin');
     Route::get('tunggakan-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:admin');
 });
 

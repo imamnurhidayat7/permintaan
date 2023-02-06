@@ -22,7 +22,8 @@ class Request extends Model
         'waktu_approval',
         'jenis',
         'type',
-        'status'
+        'status',
+        'file'
     ];
 
     public function layanan()

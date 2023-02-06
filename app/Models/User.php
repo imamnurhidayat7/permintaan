@@ -31,7 +31,8 @@ class User extends Authenticatable
         'id_bidang',
         'kantor',
         'buat_tiket',
-        'foto'
+        'foto',
+        'isUserPusat'
     ];
 
     /**

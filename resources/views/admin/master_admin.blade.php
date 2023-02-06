@@ -161,10 +161,11 @@
     <!-- <script src="{{ URL::asset('/ckeditor/ckeditor.js') }}"></script> -->
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <script src="{{ URL::asset('/js/tagsinput.js') }}"></script>
-    <!-- <script src="{{ URL::asset('/js/jquery.toast.js') }}"></script> -->
+    <script src="{{ URL::asset('/js/jquery.toast.js') }}"></script>
     <script>
         $('#datatable').DataTable();
     </script>
+    @include('layouts.pusher')
     @yield('script')
     </body>
 </html>

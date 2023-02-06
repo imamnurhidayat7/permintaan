@@ -16,6 +16,8 @@ class DetailRequestAkses extends Model
         'peralatan',
         'ip_address',
         'mac_address',
+        'email',
+        'nip',
     ];
 
     public function requestAkses()

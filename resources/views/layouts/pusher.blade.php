@@ -4,7 +4,7 @@
 
 
 -->
-<!-- <link href="{{ URL::asset('/css/jquery.toast.css?v2.4') }}" rel="stylesheet" type="text/css" /> -->
+<link href="{{ URL::asset('/css/jquery.toast.css?v2.4') }}" rel="stylesheet" type="text/css" />
 
 <script src="{{ URL::asset('/js/jquery.toast.js') }}"></script>
 <script type="text/javascript">
@@ -123,6 +123,7 @@
 //     });
 
 $('.btnNotif').on('click', function(){
+    console.log('a');
 
 $.ajax({
 
@@ -162,15 +163,15 @@ $('.file-upload').on('change', function() {
     const size = 
         (this.files[0].size / 1024 / 1024).toFixed(2);
 
-    if (size > 2) {
-        // $.toast({
-        //     heading: 'Gagal',
-        //     text: 'ukuran file maksimal 2mb',
-        //     showHideTransition: 'plain',
-        //     icon: 'error',
-        //     position: 'top-right',
-        //     stack:false,
-        // });
+    if (size > 5) {
+        $.toast({
+            heading: 'Gagal',
+            text: 'ukuran file maksimal 2mb',
+            showHideTransition: 'plain',
+            icon: 'error',
+            position: 'top-right',
+            stack:false,
+        });
         $(this).val('');
     } 
 });

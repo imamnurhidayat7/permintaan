@@ -27,7 +27,7 @@
                     <div class="row mt-4 py-4">
                         @if(!$layanan->isEmpty())
                         @foreach($layanan as $row)
-                        <div class="col-md-3 col-sm-12">
+                        <div class="col-md-3 col-sm-12" @if($row->isLayananPusat == 1 && Session::get('isUserPusat') != 1) style="display:none;" @endif>
                             <div class="card card-layanan overflow-hidden py-3">
                                 <div class="card-body pt-0">
                                     <div class="row">
