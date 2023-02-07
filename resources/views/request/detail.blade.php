@@ -95,6 +95,16 @@
                                     @endif
                                     @endforeach
                                     @endif
+                                    @if($request->keterangan != '')
+                                        <div class="col-lg-12">
+                                            <div class="mt-4">
+                                                <div>
+                                                <label for="basicpill-lastname-input">Keterangan :</label><br/>
+                                                <span>{!!$request->keterangan!!}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
                                 </div>
                             </div>
                             @if($request->status == 'Menunggu Persetujuan' && Session::get('id') == $request->layanan->id_pic)

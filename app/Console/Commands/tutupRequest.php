@@ -40,7 +40,7 @@ class tutupRequest extends Command
     {
 
         $req = Req::where('status', 'Selesai')->get();
-        $hours = 'aaa';
+        $hours = '';
         foreach($req as $row){
             $starttimestamp = new \DateTime($row->updated_at);
             $endtimestamp = new \DateTime(date('Y-m-d H:i:s'));

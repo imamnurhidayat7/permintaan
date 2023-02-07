@@ -36,9 +36,7 @@
     </div>
     <div class="col-md-12 mb-2">
         <label for="">IP yang ingin diakses*</label>
-        <textarea name="ip_address" disabled cols="30" rows="3" class="form-control">
-        {{$row->ip_address}}
-        </textarea>
+        <textarea name="ip_address" disabled cols="30" rows="3" class="form-control">{{$row->ip_address}}</textarea>
     </div>
     @endforeach
     @else

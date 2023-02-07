@@ -12,7 +12,7 @@
         <textarea name="akun" id="" cols="30" rows="3"class="form-control" @if($request->status != 'Ditolak') disabled @endif required>{{$va->akun}}</textarea>
     </div>
     <div class="col-md-12 mb-2">
-        <label for="">Surat Permohonan / Nota Dinas*</label><br/>
+        <label for="">Surat Permohonan / Nota Dinas/ Dokumen Hasil VA*</label><br/>
         <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$va->nota_dinas}}"  data-title="Nota Dinas" type="button">Lihat File</button>
         @if($request->status == 'Ditolak')
         <label for="">Ganti File</label>

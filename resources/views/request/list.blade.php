@@ -67,7 +67,7 @@
                                 </td>
                                 <td>
                                 <a href="{{url('request/detail', $row->id)}}" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>
-                                @if(Session::get('role') == 'admin')
+                                @if(Session::get('isSuperAdmin'))
                                 <a href="#" data-id="{{$row->id}}" class="btn btnReAssign btn-success waves-effect waves-light" role="button"><i class="mdi mdi-pencil d-block font-size-16" aria-hidden="true"></i> </a>
                                 @endif
                                 </td>
@@ -174,9 +174,9 @@
                 var layanan = $('.filterlayanan').val();
                 var status = $('.filterstatus').val();
                 if (
-                    (layanan == data[2] && status == data[4]) || 
+                    (layanan == data[2] && status == data[3]) || 
                     (layanan == data[2] && status == "") || 
-                    (layanan == "" && status == data[4]) || 
+                    (layanan == "" && status == data[3]) || 
                     (layanan == "" && status == "")
                 ) {
                     return true;
