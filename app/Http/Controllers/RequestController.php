@@ -613,13 +613,13 @@ class RequestController extends Controller{
             $tujuan = User::find($data['id_user_disposisi']);
 
             if($data['jenis'] == 1){
-                $tahapan = 'Ditugaskan ke '.$tujuan->name;
+                $tahapan = 'Menunggu Persetujuan '.$tujuan->name;
                 $pesan = $pengirim->name.' menugaskan request #'.$req->no_req;
                 $data['approval'] = 1;
                 $data['waktu_approval'] = date('Y-m-d H:i:s');
             }
             elseif($data['jenis'] == 2){
-                $tahapan = 'Menunggu Persetujuan '.$tujuan->name;
+                $tahapan = 'Ditugaskan ke '.$tujuan->name;
                 $pesan = $pengirim->name.' meminta persetujuan request #'.$req->no_req;
             }
 
