@@ -851,8 +851,8 @@ class RequestController extends Controller{
         $insert_req = Req::create([
             'layanan_id' => $data['id'],
             'user_id' => Session::get('id'),
-            'status' => 'Request Diajukan',
-            'tahapan' => 'Menunggu Pengecekan Berkas',
+            'status' => 'Sedang Diproses',
+            'tahapan' => 'Sedang Diproses',
             'no_req' => $no_req,
             'id_user_disposisi' => $layanan->id_pelaksana
         ]);
@@ -906,35 +906,40 @@ class RequestController extends Controller{
         $data = $request['outer-group'][0];
 
         if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
-            $nip = $data['nip'];
-            $db = DB::connection('oracle_db');
-            $check_email = $db->selectOne("SELECT NAMA_LENGKAP, SATKERID, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$nip' ");
-            if($check_email){
-                if($check_email->email != null){
-                    $validasi = explode('@', $check_email->email);
-                    if($validasi[1] == 'atrbpn.go.id'){
-                        $data['email'] = $check_email->email;
-                        $data['nama'] = $check_email->nama_lengkap;
+            if($data['pegawai'] == 'ASN'){
+                $nip = $data['nip'];
+                $db = DB::connection('oracle_db');
+                $check_email = $db->selectOne("SELECT NAMA_LENGKAP, SATKERID, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$nip' ");
+                if($check_email){
+                    if($check_email->email != null){
+                        $validasi = explode('@', $check_email->email);
+                        if($validasi[1] == 'atrbpn.go.id'){
+                            $data['email'] = $check_email->email;
+                            $data['nama'] = $check_email->nama_lengkap;
+                        }
+                        else{
+                            Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
+                            return redirect()->back();
+                        }
                     }
-                    else{
-                        Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
-                        return redirect()->back();
+    
+                    if($check_email->satkerid != null){
+                        $satkerid = substr($check_email->satkerid, 0, 6);
+                        //dd($data_simpeg);
+                        $satker = $db->selectOne("SELECT SATKER FROM SIMPEG_2702.SATKER WHERE SATKERID = '$satkerid' ");
+                        if($satker){
+                            $data['satker'] = $satker->satker;
+                        }
                     }
+    
                 }
-
-                if($check_email->satkerid != null){
-                    $satkerid = substr($check_email->satkerid, 0, 6);
-                    //dd($data_simpeg);
-                    $satker = $db->selectOne("SELECT SATKER FROM SIMPEG_2702.SATKER WHERE SATKERID = '$satkerid' ");
-                    if($satker){
-                        $data['satker'] = $satker->satker;
-                    }
+                else{
+                    Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
+                    return redirect()->back();
                 }
-
             }
             else{
-                Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
-                return redirect()->back();
+                $data['nip'] = '';
             }
         }
 

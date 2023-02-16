@@ -71,8 +71,32 @@
                             </div>
                             <div id="internal">
                                 <div class="col-md-12 mb-2">
-                                    <label for="">NIP*</label>
-                                    <input type="text" name="nip" class="form-control" required>
+                                    <label for="">Tipe Pegawai</label>
+                                    <select name="pegawai" id="tipe_pegawai" class="form-control" required>
+                                        <option value="">Pilih Tipe Pegawai</option>
+                                        <option value="ASN">ASN</option>
+                                        <option value="NON ASN">NON ASN</option>
+                                    </select>
+                                </div>
+                                <div class="asn">
+                                    <div class="col-md-12 mb-2">
+                                        <label for="">NIP*</label>
+                                        <input type="text" name="nip" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="nonasn row">
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Nama*</label>
+                                        <input type="text" name="nama" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Email*</label>
+                                        <input type="text" name="email" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label for="">Satuan Kerja*</label>
+                                        <input type="text" name="satker" class="form-control" required>
+                                    </div>
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="">Peralatan yang digunakan*</label>
@@ -162,6 +186,8 @@
         $('#pihak3').hide();
         $('#lainnya_internal').hide();
         $('#lainnya_pihak3').hide();
+        $('.asn').hide();
+        $('.nonasn').hide();
         // set default dates
         var start = new Date();
         // set end date to max one year period:
@@ -240,10 +266,13 @@
                         $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
                     }
                     else if (type == 'Internal'){
+                        
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').show().find(':input').prop('disabled', false);
                         $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+
+                        
                         
                     }
                     else if (type == 'Pihak Ketiga'){
@@ -262,6 +291,7 @@
                         $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
                     }
                     else if(type == 'Internal'){
+                        //alert('a');
                         $('#internal').show().find(':input').prop('disabled', false);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
@@ -276,6 +306,17 @@
                 }
             }
             
+        });
+
+        $('#tipe_pegawai').on('change', function(){
+            if($(this).val() == 'ASN'){
+                $('.asn').show().find(':input').prop('disabled', false);
+                $('.nonasn').hide().find(':input').prop('disabled', true);
+            }
+            else{
+                $('.asn').hide().find(':input').prop('disabled', true);
+                $('.nonasn').show().find(':input').prop('disabled', false);
+            }
         });
 
     </script>
