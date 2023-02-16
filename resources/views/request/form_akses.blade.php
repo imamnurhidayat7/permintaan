@@ -27,6 +27,10 @@
         <input type="text" name="nama" value="{{$row->email}}" disabled class="form-control" required>
     </div>
     <div class="col-md-12 mb-2">
+        <label for="">Satuan Kerja*</label>
+        <textarea name="satker" id="" cols="3" rows="3" class="form-control" disabled>{{$row->satker}}</textarea>
+    </div>
+    <div class="col-md-12 mb-2">
         <label for="">Peralatan yang digunakan*</label>
         <input type="text" name="peralatan" value="{{$row->peralatan}}" disabled class="form-control" required>
     </div>

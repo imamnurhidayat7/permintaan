@@ -18,6 +18,7 @@ class DetailRequestAkses extends Model
         'mac_address',
         'email',
         'nip',
+        'satker'
     ];
 
     public function requestAkses()

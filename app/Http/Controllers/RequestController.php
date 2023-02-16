@@ -908,7 +908,7 @@ class RequestController extends Controller{
         if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
             $nip = $data['nip'];
             $db = DB::connection('oracle_db');
-            $check_email = $db->selectOne("SELECT NAMA_LENGKAP, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$nip' ");
+            $check_email = $db->selectOne("SELECT NAMA_LENGKAP, SATKERID, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$nip' ");
             if($check_email){
                 if($check_email->email != null){
                     $validasi = explode('@', $check_email->email);
@@ -921,6 +921,16 @@ class RequestController extends Controller{
                         return redirect()->back();
                     }
                 }
+
+                if($check_email->satkerid != null){
+                    $satkerid = substr($check_email->satkerid, 0, 6);
+                    //dd($data_simpeg);
+                    $satker = $db->selectOne("SELECT SATKER FROM SIMPEG_2702.SATKER WHERE SATKERID = '$satkerid' ");
+                    if($satker){
+                        $data['satker'] = $satker->satker;
+                    }
+                }
+
             }
             else{
                 Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
@@ -980,6 +990,7 @@ class RequestController extends Controller{
                         'nama' => $data['nama'],
                         'email' => $data['email'],
                         'nip' => $data['nip'],
+                        'satker' => $data['satker'],
                         'peralatan'=>$data['peralatan'],
                         'ip_address'=>$data['ip_address'],
                         'mac_address'=>$data['mac_address'],

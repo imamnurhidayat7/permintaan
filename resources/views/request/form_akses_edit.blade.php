@@ -3,7 +3,7 @@
 <input type="hidden" name="id" value="{{$akses->id}}">
     <div class="col-md-6 mb-2">
         <label for="">Jenis Layanan</label>
-        <select name="jenis" id="type" class="form-control" required>
+        <select name="jenis" id="type" disabled class="form-control" required>
             <option value="">Pilih Jenis Layanan</option>
             <option value="VPN" @if($akses->jenis == 'VPN') selected @endif>VPN</option>
             <option value="Akses Jaringan" @if($akses->jenis == 'Akses Jaringan') selected @endif>Akses Jaringan</option>
@@ -11,27 +11,39 @@
     </div>
     <div class="col-md-6 mb-2">
         <label for="">Kategori</label>
-        <select name="kategori" id="kategori" class="form-control" required>
+        <select name="kategori" id="kategori" disabled class="form-control" required>
             <option value="">Pilih Kategori</option>
             <option value="Internal" @if($akses->kategori == 'Internal') selected @endif>Internal</option>
             <option value="Pihak Ketiga" @if($akses->kategori == 'Pihak Ketiga') selected @endif>Pihak Ketiga</option>
         </select>
     </div>
     @if($akses->kategori == 'Internal')
+    @foreach($akses->userAkses as $row)
+    <div class="col-md-6 mb-2">
+        <label for="">Nama</label>
+        <input type="text" name="nama" value="{{$row->nama}}" disabled class="form-control" required>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label for="">Email</label>
+        <input type="text" name="nama" value="{{$row->email}}" disabled class="form-control" required>
+    </div>
+    <div class="col-md-12 mb-2">
+        <label for="">Satuan Kerja*</label>
+        <textarea name="satker" id="" cols="3" rows="3" class="form-control" disabled>{{$row->satker}}</textarea>
+    </div>
     <div class="col-md-12 mb-2">
         <label for="">Peralatan yang digunakan*</label>
-        <input type="text" name="peralatan" value="{{$akses->peralatan}}" class="form-control" required>
+        <input type="text" name="peralatan" value="{{$row->peralatan}}"  class="form-control" required>
     </div>
     <div class="col-md-12 mb-2">
         <label for="">Mac Address*</label>
-        <input type="text" name="mac_address" value="{{$akses->mac_address}}" class="form-control" required>
+        <input type="text" name="mac_address" value="{{$row->mac_address}}"  class="form-control" required>
     </div>
     <div class="col-md-12 mb-2">
         <label for="">IP yang ingin diakses*</label>
-        <textarea name="ip_address" id="" cols="30" rows="3" class="form-control">
-        {{$akses->ip_address}}
-        </textarea>
+        <textarea name="ip_address" cols="30" rows="3" class="form-control">{{$row->ip_address}}</textarea>
     </div>
+    @endforeach
     @else
     <hr class="mt-4">
     <h5 class="text-center">DATA PEKERJAAN</h5>
