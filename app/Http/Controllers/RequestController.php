@@ -19,6 +19,7 @@ use App\Models\DetailRequestEmail;
 use App\Models\Catatan;
 use App\Models\Disposisi;
 use App\Models\User;
+use DataTables;
 use App\Models\Pemberitahuan;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -52,16 +53,84 @@ class RequestController extends Controller{
         $data['request'] = Req::with('user')->with('pelaksana')->with('layanan.fields')->with('meta')->get();
         $data['layanan'] = Layanan::where('status', 1)->get();
         $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
-        //dd($data);
-        return view('request.list')->with($data);
+        
+        if ($request->ajax()) {
+            $request = Req::with('user')->with('pelaksana')->with('layanan.fields')->with('meta')->get();
+            return Datatables::of($request)
+                    ->addColumn('action', function($row){
+                        $url = url('request/detail', $row->id);
+                        $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
+                        if(Session::get('isSuperAdmin')){
+                        $btn = $btn.' <a href="#" data-id="'.$row->id.'" class="btn btnReAssign btn-success waves-effect waves-light" role="button"><i class="mdi mdi-pencil d-block font-size-16" aria-hidden="true"></i> </a>';
+                        }
+        
+                        return $btn;
+                    })
+                    ->addColumn('layanan', function($row){
+                         return $row->layanan->layanan;
+                    })
+                    ->addColumn('pelaksana', function($row){
+                        if($row->pelaksana != null){
+                            return $row->pelaksana->name;
+                        }           
+                    })
+                    ->addColumn('created_at', function($row){
+                        // $date = convert_date('Y-m-d', $row->created_at);
+                        // $time = date('Gi.s', $row->created_at);
+
+                        return $row->created_at;
+                    })
+                    
+                    ->filter(function ($instance) use ($request) {
+                        if($request->get('status') != '') {
+                            $instance->where('status', $request->get('status'));
+                        }
+                    })
+                    ->rawColumns(['action', 'layanan', 'pelaksana', 'created_at'])
+                    ->make(true);
+        }
+
+        return view('request.list-request')->with($data);
     }
 
-    public function showRequestAssignToMe(){
+    public function showRequestAssignToMe(Request $request){
         $data['layanan'] = Layanan::where('status', 1)->get();
         $data['request'] = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Selesai')->get();
         $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
-        
-        return view('request.list')->with($data);
+        if ($request->ajax()) {
+            $request = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Selesai')->get();
+            return Datatables::of($request)
+                    ->addColumn('action', function($row){
+                        $url = url('request/detail', $row->id);
+                        $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
+                    
+                        return $btn;
+                    })
+                    ->addColumn('layanan', function($row){
+                         return $row->layanan->layanan;
+                    })
+                    ->addColumn('pelaksana', function($row){
+                        if($row->pelaksana != null){
+                            return $row->pelaksana->name;
+                        }           
+                    })
+                    ->addColumn('created_at', function($row){
+                        // $date = convert_date('Y-m-d', $row->created_at);
+                        // $time = date('Gi.s', $row->created_at);
+
+                        return $row->created_at;
+                    })
+                    
+                    ->filter(function ($instance) use ($request) {
+                        if($request->get('status') != '') {
+                            $instance->where('status', $request->get('status'));
+                        }
+                    })
+                    ->rawColumns(['action', 'layanan', 'pelaksana', 'created_at'])
+                    ->make(true);
+        }
+
+        return view('request.tunggakan_request')->with($data);
     }
 
     public function requestDetail($id){
@@ -302,14 +371,45 @@ class RequestController extends Controller{
         return redirect('request');
     }
 
-    public function showMyRequest(){
+    public function showMyRequest(Request $request){
         $data['request'] = Req::where('user_id', Session::get('id'))->get();
         $data['layanan'] = Layanan::where('status', 1)->get();
         $data['bidang'] = Bidang::all();
+
+        if ($request->ajax()) {
+            
+            $request = Req::where('user_id', Session::get('id'))->get();
+            return Datatables::of($request)
+                    ->addColumn('action', function($row){
+                        $url = url('request/detail', $row->id);
+                        $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
+                    
+                        return $btn;
+                    })
+                    ->addColumn('layanan', function($row){
+                         return $row->layanan->layanan;
+                    })
+                    ->addColumn('created_at', function($row){
+                        // $date = convert_date('Y-m-d', $row->created_at);
+                        // $time = date('Gi.s', $row->created_at);
+
+                        return $row->created_at;
+                    })
+                    
+                    ->filter(function ($instance) use ($request) {
+                        if($request->get('status') != '') {
+                            $instance->where('status', $request->get('status'));
+                        }
+                    })
+                    ->rawColumns(['action', 'layanan', 'created_at'])
+                    ->make(true);
+        }
+
         if(Session::get('role') == 'pemohon' || Session::get('role') == '') {
             return view('requester.my_request')->with($data);   
         }
         else{
+            
             return view('request.my_request')->with($data);
         }
         

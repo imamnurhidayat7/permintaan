@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends(Session::get('role').'.master_'.Session::get('role'))
 
 @section('content')
         <div class="row mb-2">
@@ -8,7 +8,7 @@
                     <div class="card py-4">
                         <div class="card-body">
                         <a href="{{url()->previous()}}" class="btn btn-sm btn-default"><i class="mdi mdi-arrow-left"></i> Kembali</a>
-                        <h4 class="fw-medium mb-4 text-center">Data Request Saya</h4>
+                        <h4 class="fw-medium mb-4 text-center">Data Request Layanan</h4>
                         <a class="btn btnTambah btn-sm btn-primary mb-4"> <i class="fa fa-plus"></i> Tambah Request</a>
                         <div class="row">
                         <div class="col-md-4 mb-4 mt-4">
@@ -41,6 +41,7 @@
                             <th>Tanggal</th>
                             <th>Layanan</th>
                             <th>Status</th>
+                            <th>Pelakasana</th>
                             <th>Action</th>
                             </tr>
                         </thead>
@@ -96,6 +97,35 @@
         </div><!-- /.modal-dialog -->
     </div>
     
+    <div class="modal fade transaction-detailModal show" id="modalAssign" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form action="{{url('tugaskan-request')}}" method="post">@csrf
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transaction-detailModalLabel">Tugaskan Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                        <select name="id_user_disposisi" id="" class="form-control" required>
+                            <option value="">Pilih Pelaksana</option>
+                            @foreach($pelaksana as $row)
+                            <option value="{{$row->id}}">{{$row->name}}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="assign_id">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
     </div> <!-- content -->
     @endsection
     @section('script')
@@ -114,7 +144,7 @@
         serverSide: true,
         "order": [[ 0, "desc" ]],
         ajax: {
-            url : "{{url('my-request')}}",
+            url : "{{url('request')}}",
             method : 'GET',
             data : function (d) {
                 d.status = $('#filter-status').val();
@@ -128,6 +158,7 @@
             {data: 'created_at', name: 'created_at'},
             {data: 'layanan', name: 'layanan'},
             {data: 'status', name: 'status'},
+            {data: 'pelaksana', name: 'pelaksana'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
            
         ]

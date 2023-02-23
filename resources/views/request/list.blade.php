@@ -62,7 +62,7 @@
                                 <!-- <td>{{$row->tahapan}}</td> -->
                                 <td>
                                     @if($row->pelaksana != null)
-                                    {{$row->pelaksana->name}}
+                                        {{$row->pelaksana->name}}
                                     @endif
                                 </td>
                                 <td>

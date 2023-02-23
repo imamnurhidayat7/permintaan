@@ -8,12 +8,12 @@
                     <div class="card py-4">
                         <div class="card-body">
                         <a href="{{url()->previous()}}" class="btn btn-sm btn-default"><i class="mdi mdi-arrow-left"></i> Kembali</a>
-                        <h4 class="fw-medium mb-4 text-center">Request Layanan Saya</h4>
+                        <h4 class="fw-medium mb-4 text-center">Data Request Saya</h4>
                         <a class="btn btnTambah btn-sm btn-primary mb-4"> <i class="fa fa-plus"></i> Tambah Request</a>
                         <div class="row">
                         <div class="col-md-4 mb-4 mt-4">
                             <label>Filter By Layanan</label>
-                            <select class="form-control select2 filterlayanan" name="kantor_id">
+                            <select class="form-control select2 filterlayanan" id="filter-layanan">
                                 <option value="">Semua Layanan</option>
                                 @foreach($layanan as $row)
                                 <option value="{{$row->layanan}}">{{$row->layanan}}</option>
@@ -22,8 +22,8 @@
                         </div>
                         <div class="col-md-4 mb-4 mt-4">
                             <label>Filter By Status</label>
-                            <select class="form-control select2 filterstatus" name="status">
-                            <option value="">Semua</option>
+                            <select class="form-control select2 filterstatus" id="filter-status" name="status">
+                                <option value="">Semua</option>
                                 <option value="Request Diajukan">Request Diajukan</option>
                                 <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
                                 <option value="Sedang Diproses">Sedang Diproses</option>
@@ -32,36 +32,20 @@
                                 <option value="Ditutup">Ditutup</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mb-4 mt-4">
-                            <label class="text-white">Filter By Status</label><br/>
-                            <button class="btn btn-primary btn-filter" id="btn-filter">Filter</button>
-                        </div>
                         </div>
 
-                        <table id="datatable2" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable3" class="table table-bordered dt-responsive  nowrap w-100">
                         <thead>
                             <tr>
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Layanan</th>
                             <th>Status</th>
-                            <th>Tahapan</th>
                             <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach($request as $row)
-                            <tr>
-                                <td>{{$row->no_req}}</td>
-                                <td>{{$row->created_at}}</td>
-                                <td>{{$row->layanan->layanan}}</td>
-                                <td>{{$row->status}}</td>
-                                <td>{{$row->tahapan}}</td>
-                                <td>
-                                <a href="{{url('/my-request/detail', $row->id)}}" class="btn btn-success waves-effect waves-light @if($row->status == 'Disetujui') disabled @endif" role="button"><i class="mdi mdi-pencil d-block font-size-16"></i></a>
-                                </td>
-                            </tr>
-                        @endforeach
+                        
                         </tbody>
                     </table>
                         </div>
@@ -71,7 +55,7 @@
             </form>
             <!-- end row -->
 
-        <div class="modal fade bs-example-modal-xl" id="modalTambah" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" aria-modal="true" role="dialog" >
+    <div class="modal fade bs-example-modal-xl" id="modalTambah" tabindex="-1" aria-labelledby="myExtraLargeModalLabel" aria-modal="true" role="dialog" >
         <div class="modal-dialog modal-xl" >
             <div class="modal-content">
                 <div class="modal-header">
@@ -116,35 +100,63 @@
     @endsection
     @section('script')
     <script>
-        var table = $('#datatable2').DataTable({
-            "order": [[ 0, "desc" ]],
-        });
-
+        
         $('.btnTambah').on('click', function(){
             $('#modalTambah').modal('show');
         });
-
-        $('.btn-filter').on('click', function(){
-            table.draw();
-        });
-
-        $.fn.dataTable.ext.search.push(
-            function( settings, data, dataIndex ) {
-                var layanan = $('.filterlayanan').val();
-                var status = $('.filterstatus').val();
-                if (
-                    (layanan == data[2] && status == data[3]) || 
-                    (layanan == data[2] && status == "") || 
-                    (layanan == "" && status == data[3]) || 
-                    (layanan == "" && status == "")
-                ) {
-                    return true;
-                }
-                return false;
-            }
-        );
-
+ 
     </script>
+    <script type="text/javascript">
+  $(function () {
+    
+    var table = $('#datatable3').DataTable({
+        processing: true,
+        serverSide: true,
+        "order": [[ 0, "desc" ]],
+        ajax: {
+            url : "{{url('my-request')}}",
+            method : 'GET',
+            data : function (d) {
+                d.status = $('#filter-status').val();
+                d.kategori = 'pemohon';
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        },
+        columns: [
+            {data: 'no_req', name: 'no_req'},
+            {data: 'created_at', name: 'created_at'},
+            {data: 'layanan', name: 'layanan'},
+            {data: 'status', name: 'status'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+           
+        ]
+    });
+
+    $('#filter-layanan').on( 'change', function () {
+        table
+            .columns(2)
+            .search( this.value )
+            .draw();
+    });
+
+    $('#filter-status').on( 'change', function () {
+        table
+            .columns(3)
+            .search( this.value )
+            .draw();
+    });
+
+    $(document).on('click', '.btnReAssign', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $('#assign_id').val(id);
+            $('#modalAssign').modal('show');
+        });
+    
+  });
+</script>
     @endsection
     </body>
 </html>
