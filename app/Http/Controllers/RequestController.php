@@ -381,13 +381,24 @@ class RequestController extends Controller{
             $request = Req::where('user_id', Session::get('id'))->get();
             return Datatables::of($request)
                     ->addColumn('action', function($row){
-                        $url = url('request/detail', $row->id);
+                        if(Session::get('role') == 'pemohon' || Session::get('role') == '') {
+                            $url = url('request/detail', $row->id);
+                        }
+                        else{
+                            $url = url('my-request/detail', $row->id);
+                        }
+                        
                         $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
                     
                         return $btn;
                     })
                     ->addColumn('layanan', function($row){
                          return $row->layanan->layanan;
+                    })
+                    ->addColumn('pelaksana', function($row){
+                        if($row->pelaksana != null){
+                            return $row->pelaksana->name;
+                        }           
                     })
                     ->addColumn('created_at', function($row){
                         // $date = convert_date('Y-m-d', $row->created_at);
@@ -401,7 +412,7 @@ class RequestController extends Controller{
                             $instance->where('status', $request->get('status'));
                         }
                     })
-                    ->rawColumns(['action', 'layanan', 'created_at'])
+                    ->rawColumns(['action', 'layanan', 'created_at', 'pelaksana'])
                     ->make(true);
         }
 

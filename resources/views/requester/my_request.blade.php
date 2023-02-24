@@ -41,6 +41,7 @@
                             <th>Tanggal</th>
                             <th>Layanan</th>
                             <th>Status</th>
+                            <th>Pelaksana</th>
                             <th>Action</th>
                             </tr>
                         </thead>
@@ -128,6 +129,7 @@
             {data: 'created_at', name: 'created_at'},
             {data: 'layanan', name: 'layanan'},
             {data: 'status', name: 'status'},
+            {data: 'pelaksana', name: 'pelaksana'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
            
         ]
