@@ -123,7 +123,7 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::get('pelaksana/request', [RequestController::class, 'showRequestList'])->middleware('checkRole:pelaksana');
     Route::get('pelaksana/request-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:pelaksana');
 
-    Route::get('request', [RequestController::class, 'showRequestList'])->middleware('checkRole:admin');
+    Route::get('request', [RequestController::class, 'showRequestList'])->middleware('checkRole:admin,pelaksana,kasi,kabid');
     Route::post('tugaskan-request', [RequestController::class, 'reassignRequest'])->middleware('checkRole:admin');
     Route::get('tunggakan-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:admin');
 });
