@@ -79,11 +79,49 @@
                                     </select>
                                 </div>
                                 <div class="asn">
-                                    <div class="col-md-12 mb-2">
+                                    <!-- <div class="col-md-12 mb-2">
                                         <label for="">NIP*</label>
                                         <input type="text" name="nip" class="form-control" required>
-                                    </div>
-                                </div>
+                                    </div> -->
+                                    <hr class="mt-4">
+                                    <h5 class="text-center">DATA PEGAWAI</h5>
+                                    <hr>
+                                    <div class="inner-repeater mb-4 mt-2">
+                                            <div data-repeater-list="inner-group" class="inner mb-3">
+                                                <div data-repeater-item class="inner mb-3 row">
+                                                    <div class="col-md-3 col-sm-12 mb-2">
+                                                    <label class="form-label">NIP*</label>
+                                                    <textarea name="nip[]" class="form-control" cols="30" rows="3"></textarea>
+                                                    <!-- <input type="text" name="nama[]" class="form-control" required> -->
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12 mb-2">
+                                                        <label class="form-label">Peralatan yang digunakan*</label>
+                                                        <textarea name="peralatan[]" class="form-control" cols="30" rows="3"></textarea>
+                                                        <!-- <input type="text" name="peralatan[]" class="form-control" required> -->
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-12 mb-2">
+                                                        <label class="form-label">Mac Address*</label>
+                                                        <textarea name="mac_address[]" class="form-control" cols="30" rows="3"></textarea>
+                                                        <!-- <input type="text" name="mac_address[]" class="form-control" required>-->
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-12 mb-2">
+                                                        <label class="form-label">IP Address yang dituju*</label>
+                                                        <textarea name="ip_address[]" class="form-control" cols="30" rows="3"></textarea>
+                                                        <!-- <input type="text" name="ip_address[]" class="form-control" required> -->
+                                                    </div>
+                                                    <div class="col-auto mb-2">
+                                                        <label class="form-label" style="color:white;">Hapus</label><br/>
+                                                        <input data-repeater-delete type="button" class="btn btn-danger"
+                                                                value="X" />
+                                                    </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                <input data-repeater-create type="button" class="btn btn-sm btn-success inner"
+                                                    value="+ Tambah Personel" />
+                                                    <hr>
+                                        </div>
+                                               </div>
                                 <div class="nonasn row">
                                     <div class="col-md-6 mb-2">
                                         <label for="">Nama*</label>
@@ -98,7 +136,7 @@
                                         <input type="text" name="satker" class="form-control" required>
                                     </div>
                                 </div>
-                                <div class="col-md-12 mb-2">
+                                <!-- <div class="col-md-12 mb-2">
                                     <label for="">Peralatan yang digunakan*</label>
                                     <input type="text" name="peralatan" class="form-control" required>
                                 </div>
@@ -109,7 +147,7 @@
                                 <div class="col-md-12 mb-2">
                                     <label for="">IP yang ingin diakses*</label>
                                     <textarea name="ip_address" id="" cols="30" rows="3" class="form-control"></textarea>
-                                </div>
+                                </div> -->
                             </div>
                             <div id="pihak3">
                             <hr>
@@ -141,19 +179,23 @@
                                         <div data-repeater-item class="inner mb-3 row">
                                             <div class="col-md-3 col-sm-12 mb-2">
                                             <label class="form-label">Nama Personel*</label>
-                                            <input type="text" name="nama[]" class="form-control" required>
+                                            <textarea name="nama[]" class="form-control" cols="30" rows="3"></textarea>
+                                            <!-- <input type="text" name="nama[]" class="form-control" required> -->
                                             </div>
                                             <div class="col-md-3 col-sm-12 mb-2">
                                                 <label class="form-label">Peralatan yang digunakan*</label>
-                                                <input type="text" name="peralatan[]" class="form-control" required>
+                                                <textarea name="peralatan[]" class="form-control" cols="30" rows="3"></textarea>
+                                                <!-- <input type="text" name="peralatan[]" class="form-control" required> -->
                                             </div>
                                             <div class="col-md-2 col-sm-12 mb-2">
                                                 <label class="form-label">Mac Address*</label>
-                                                <input type="text" name="mac_address[]" class="form-control" required>
+                                                <textarea name="mac_address[]" class="form-control" cols="30" rows="3"></textarea>
+                                                <!-- <input type="text" name="mac_address[]" class="form-control" required>-->
                                             </div>
                                             <div class="col-md-3 col-sm-12 mb-2">
                                                 <label class="form-label">IP Address yang dituju*</label>
-                                                <input type="text" name="ip_address[]" class="form-control" required>
+                                                <textarea name="ip_address[]" class="form-control" cols="30" rows="3"></textarea>
+                                                <!-- <input type="text" name="ip_address[]" class="form-control" required> -->
                                             </div>
                                             <div class="col-auto mb-2">
                                                 <label class="form-label" style="color:white;">Hapus</label><br/>

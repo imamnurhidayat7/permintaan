@@ -51,7 +51,7 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->middleware('checkRole:admin');
     Route::get('admin/request', [AdminController::class, 'showRequestList'])->middleware('checkRole:admin');
     Route::get('admin/request/detail/{id}', [AdminController::class, 'requestDetail'])->middleware('checkRole:admin');
-    Route::get('request/detail/{id}', [RequestController::class, 'requestDetail'])->middleware('checkRole:admin,kasi,kabid,kapus,pelaksana');
+    Route::get('request/detail/{id}', [RequestController::class, 'requestDetail'])->middleware('checkRole:admin,kasi,kabid,kapus,pelaksana,pemohon');
 
 
     Route::post('admin/request/update', [AdminController::class, 'updateRequest'])->middleware('checkRole:admin');

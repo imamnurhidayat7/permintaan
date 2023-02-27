@@ -138,7 +138,8 @@ class RequestController extends Controller{
         $data['catatan'] = Catatan::with('pengirim')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['disposisi'] = Disposisi::with('pengirim')->with('penerima')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['user'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('id_bidang', $data['request']->layanan->id_bidang)->where('id', '!=', Session::get('id'))->get();
-        
+        $data['riwayat'] = Riwayat::where('id_request', $id)->orderBy('id', 'asc')->get();
+
         if($data['request']->layanan->id == 26){
             $data['server'] = RequestServer::where('id_request', $data['request']->id)->first();
         }
@@ -177,6 +178,9 @@ class RequestController extends Controller{
             
         }
         //dd($data);
+        // if(Session::get('role') == 'pemohon'){
+        //     return view('requester.request_detail')->with($data);
+        // }
         return view('request.detail')->with($data);
     }
 
@@ -382,10 +386,10 @@ class RequestController extends Controller{
             return Datatables::of($request)
                     ->addColumn('action', function($row){
                         if(Session::get('role') == 'pemohon' || Session::get('role') == '') {
-                            $url = url('request/detail', $row->id);
+                            $url = url('my-request/detail', $row->id);
                         }
                         else{
-                            $url = url('my-request/detail', $row->id);
+                            $url = url('request/detail', $row->id);
                         }
                         
                         $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
