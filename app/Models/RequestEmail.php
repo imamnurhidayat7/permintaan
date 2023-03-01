@@ -13,7 +13,8 @@ class RequestEmail extends Model
     protected $fillable = [
         'id_request',
         'jenis',
-        'nota_dinas'
+        'nota_dinas',
+        'jenis_email'
     ];
 
     public function request()
