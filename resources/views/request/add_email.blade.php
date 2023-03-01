@@ -23,11 +23,28 @@
                                 <option value="Penonaktifan Email">Penonaktifan Email</option>
                             </select>
                         </div>
+                        <div class="col-md-12 mb-2">
+                            <label for="">Jenis Email*</label>
+                            <select name="jenis_email" id="jenis_email" class="form-control" required>
+                                <option value="">Pilih Jenis Email</option>
+                                <option value="Email Pegawai">Email Pegawai</option>
+                                <option value="Email Kedinasan">Email Kedinasan</option>
+                            </select>
+                        </div>
                         <div id="pendaftaran">
-                            <div class="col-md-12 mb-2">
-                                <label for="">NIP (Jika lebih dari 1 pisahkan dengan koma tanpa spasi)*</label>
-                                <input type="text" name="nip" class="form-control" required>
+                            <div id="pegawai">
+                                <div class="col-md-12 mb-2">
+                                    <label for="">NIP (Jika lebih dari 1 pisahkan dengan koma tanpa spasi)*</label>
+                                    <input type="text" name="nip" class="form-control" required>
+                                </div>
                             </div>
+                            <div id="kedinasan">
+                            <div class="col-md-12 mb-2">
+                                <label for="">Email yang diinginkan*</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            </div>
+                            
                         </div>
                         <div id="reset">
                             <div class="col-md-12 mb-2">
@@ -53,23 +70,54 @@
     <script>
         $('#pendaftaran').hide();
         $('#reset').hide();
-        $('#hapus').hide();
-        $('#suspend').hide();
+        $('#pegawai').hide();
+        $('#kedinasan').hide();
         
+        $('#jenis_email').on('change', function(){
+            var type = $('#type').val();
+            $('#reset').hide().find(':input').prop('disabled', true);
+            if(type == ''){   
+                alert('Pilih Jenis Layanan terlebih dahulu');
+                $(this).val('');
+                $('#pendaftaran').hide().find(':input').prop('disabled', true);
+                $('#pegawai').hide().find(':input').prop('disabled', true);
+                $('#kedinasan').hide().find(':input').prop('disabled', true);
+            }
+            else if(type == 'Pendaftaran Email Baru') {
+                var jenis_email = $(this).val();
+
+                if(jenis_email == 'Email Pegawai'){
+                    $('#pegawai').show().find(':input').prop('disabled', false);
+                    $('#kedinasan').hide().find(':input').prop('disabled', true);
+                }
+                else if(jenis_email == 'Email Kedinasan'){
+                    $('#kedinasan').show().find(':input').prop('disabled', false);
+                    $('#pegawai').hide().find(':input').prop('disabled', true);
+                }
+            }
+            else if(type == 'Penonaktifan Email'){
+                $('#reset').show().find(':input').prop('disabled', false);
+            }
+            
+        });
         $('#type').on('change', function(){
-            var type = $(this).val();
+            var type = $('#type').val();
+            $('#jenis_email').val('');
 
             if(type == ''){
-                $('#pendaftaran').hide().find(':input').prop('readonly', true);
-                $('#reset').hide().find(':input').prop('readonly', true);
+                $('#jenis_email').val('');
+                $('#pendaftaran').hide().find(':input').prop('disabled', true);
+                $('#reset').hide().find(':input').prop('disabled', true);
+                $('#pegawai').hide().find(':input').prop('disabled', true);
+                $('#kedinasan').hide().find(':input').prop('disabled', true);
             }
             else if(type == 'Pendaftaran Email Baru'){
-                $('#pendaftaran').show().find(':input').prop('readonly', false);
-                $('#reset').hide().find(':input').prop('readonly', true);
+                $('#pendaftaran').show().find(':input').prop('disabled', false);
+                $('#reset').hide().find(':input').prop('disabled', true);
             }
             else{
-                $('#pendaftaran').hide().find(':input').prop('readonly', true);
-                $('#reset').show().find(':input').prop('readonly', false);
+                $('#pendaftaran').hide().find(':input').prop('disabled', true);
+                $('#reset').show().find(':input').prop('disabled', false);
             }
             
         });

@@ -138,7 +138,8 @@ class RequestController extends Controller{
         $data['catatan'] = Catatan::with('pengirim')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['disposisi'] = Disposisi::with('pengirim')->with('penerima')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['user'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('id_bidang', $data['request']->layanan->id_bidang)->where('id', '!=', Session::get('id'))->get();
-        
+        $data['riwayat'] = Riwayat::where('id_request', $id)->orderBy('id', 'asc')->get();
+
         if($data['request']->layanan->id == 26){
             $data['server'] = RequestServer::where('id_request', $data['request']->id)->first();
         }
@@ -177,6 +178,9 @@ class RequestController extends Controller{
             
         }
         //dd($data);
+        // if(Session::get('role') == 'pemohon'){
+        //     return view('requester.request_detail')->with($data);
+        // }
         return view('request.detail')->with($data);
     }
 
@@ -1215,67 +1219,85 @@ class RequestController extends Controller{
 
         if($insert_email){
             if($data['jenis'] == 'Pendaftaran Email Baru'){
-                $nip = explode(',', $data['nip']);
-                $count1 = 0;
-                $count2 = 0;
-                $count3 = 0;
-                foreach($nip as $row){
-                    $db = DB::connection('oracle_db');
-                    $check_email = $db->selectOne("SELECT NAMA_LENGKAP, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$row' ");
-                    if($check_email){
-                        if($check_email->email != null){
-                            $validasi = explode('@', $check_email->email);
-                            if($validasi[1] == 'atrbpn.go.id'){
-                                $status = 'Sudah Ada Email';
-                                $count1++;
+                if($data['jenis_email'] == 'Email Pegawai'){
+                    $nip = explode(',', $data['nip']);
+                    $count1 = 0;
+                    $count2 = 0;
+                    $count3 = 0;
+                    foreach($nip as $row){
+                        $db = DB::connection('oracle_db');
+                        $check_email = $db->selectOne("SELECT NAMA_LENGKAP, EMAIL FROM SIMPEG_2702.SIAP_VW_PEGAWAI WHERE NIPBARU = '$row' ");
+                        if($check_email){
+                            if($check_email->email != null){
+                                $validasi = explode('@', $check_email->email);
+                                if($validasi[1] == 'atrbpn.go.id'){
+                                    $status = 'Sudah Ada Email';
+                                    $count1++;
+                                }
+                                else{
+                                    $status = 'Belum Ada Email';
+                                    $count2++;
+                                }
                             }
                             else{
                                 $status = 'Belum Ada Email';
                                 $count2++;
                             }
+            
+                            $email = $check_email->email;
+                            $nama = $check_email->nama_lengkap;
                         }
                         else{
-                            $status = 'Belum Ada Email';
-                            $count2++;
+                            $status = 'NIP Tidak Terdaftar di SIMPEG';
+                            $nama =  '';
+                            $email = '';
+                            $count3++;
                         }
+                        
+                        $detail = DetailRequestEmail::create([
+                            'nama' => $nama,
+                            'nip' => $row,
+                            'email' => $email,
+                            'status' => $status,
+                            'id_request_email' => $insert_email->id
+                        ]);
+    
+                        //dd($detail);
+                    }
+    
+                    if($count1 > 0){
+                        Req::where('id', $insert_req->id)->update([
+                            'keterangan'=> 'Bagi Email yang sudah terdaftar, silakan lakukan permintaan layanan reset password email!'
+                        ]);
+                    }
         
-                        $email = $check_email->email;
-                        $nama = $check_email->nama_lengkap;
+                    if($count2 <= 0){
+                        Req::where('id', $insert_req->id)->update([
+                            'status'=>'Ditutup', 
+                            'tahapan'=>'Ditutup Oleh Sistem',
+                            'keterangan'=> 'NIP Pegawai yang diajukan sudah memiliki email atau NIP Pegawai tidak terdaftar di SIMPEG sehingga tiket ditutup otomatis oleh sistem, Untuk reset password email silakan lakukan reset password <a href="https://registrasi.atrbpn.go.id">disini</a>!'
+                        ]);
+        
+                        $riwayat = Riwayat::create([
+                            'id_request'=> $insert_req->id,
+                            'tahapan'=> 'Request ditutup'
+                        ]);
                     }
-                    else{
-                        $status = 'NIP Tidak Terdaftar di SIMPEG';
-                        $nama =  '';
-                        $email = '';
-                        $count3++;
-                    }
-                    
+                }
+                else{
+                    $user = User::find(Session::get('id'));
+                    //dd($user->kantor);
+                    $nama = $user->kantor;
+                    $nip = '';
+                    $data_email = $data['email'];
+                    $status = '';
+
                     $detail = DetailRequestEmail::create([
                         'nama' => $nama,
-                        'nip' => $row,
-                        'email' => $email,
+                        'nip' => $nip,
+                        'email' => $data_email,
                         'status' => $status,
                         'id_request_email' => $insert_email->id
-                    ]);
-
-                    //dd($detail);
-                }
-
-                if($count1 > 0){
-                    Req::where('id', $insert_req->id)->update([
-                        'keterangan'=> 'Bagi Email yang sudah terdaftar, silakan lakukan permintaan layanan reset password email!'
-                    ]);
-                }
-    
-                if($count2 <= 0){
-                    Req::where('id', $insert_req->id)->update([
-                        'status'=>'Ditutup', 
-                        'tahapan'=>'Ditutup Oleh Sistem',
-                        'keterangan'=> 'NIP Pegawai yang diajukan sudah memiliki email atau NIP Pegawai tidak terdaftar di SIMPEG sehingga tiket ditutup otomatis oleh sistem, Untuk reset password email silakan lakukan reset password <a href="https://registrasi.atrbpn.go.id">disini</a>!'
-                    ]);
-    
-                    $riwayat = Riwayat::create([
-                        'id_request'=> $insert_req->id,
-                        'tahapan'=> 'Request ditutup'
                     ]);
                 }
             }
@@ -1305,7 +1327,6 @@ class RequestController extends Controller{
                         'tahapan'=> 'Request ditutup'
                     ]);
                 }
-
                 $detail = DetailRequestEmail::create([
                     'nama' => $nama,
                     'nip' => $nip,
@@ -1313,8 +1334,9 @@ class RequestController extends Controller{
                     'status' => $status,
                     'id_request_email' => $insert_email->id
                 ]);
-            }
 
+            }
+           
             
 
         }

@@ -1,10 +1,14 @@
-<div class="col-md-12 mb-2">
+<div class="col-md-6 mb-2">
     <label for="">Jenis Layanan</label>
     <select name="jenis" id="type" disabled class="form-control" required>
         <option value="">Pilih Jenis Layanan</option>
         <option value="Pendaftaran Email Baru" @if($email->jenis == 'Pendaftaran Email Baru') selected @endif>Pendaftaran Email Baru</option>
         <option value="Penonaktifan Email" @if($email->jenis == 'Penonaktifan Email') selected @endif>Penonaktifan Email</option>
     </select>
+</div>
+<div class="col-md-6 mb-2">
+<label for="">Jenis Email</label>
+<input type="text" class="form-control" value="{{$email->jenis_email}}" disabled>
 </div>
 <div class="col-md-12 mb-4">
     <label for="">Surat Permohonan / Nota Dinas</label><br/>
@@ -14,6 +18,7 @@
     <input type="file" name="nota_dinas" class="form-control" accept="application/pdf" max-size="2048">
     @endif
 </div>
+@if($email->jenis_email == 'Email Pegawai' || $email->jenis_email == '')
 <table id="datatable2" class="table table-bordered mt-2 ">
     <thead>
         <tr>
@@ -42,5 +47,25 @@
     @endforeach
     </tbody>
 </table>
+@else
+<table id="datatable2" class="table table-bordered mt-2 ">
+    <thead>
+        <tr>
+        <th>Kantor</th>
+        <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach($email->detailRequest as $row)
+       
+        <tr>
+            <td>{{$row->nama}}</td>
+            <td>{{$row->email}}</td>
+        </tr>
+
+    @endforeach
+    </tbody>
+</table>
+@endif
 
 
