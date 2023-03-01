@@ -69,6 +69,10 @@ class AuthController extends Controller
                 if($satker){
                     $kantor = $satker->satker;
                     $foto = $data_simpeg->foto;
+                    Session::put('isPusdatin', false);
+                    if($satker->satker == 'Pusat Data dan Informasi Pertanahan, Tata Ruang dan Lahan Pertanian Pangan Berkelanjutan'){
+                        Session::put('isPusdatin', true);
+                    }
                 }
             }
             

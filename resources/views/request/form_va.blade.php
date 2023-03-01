@@ -11,6 +11,7 @@
         <label for="">Akun (Username dan Password)*</label>
         <textarea name="akun" id="" cols="30" rows="3"class="form-control" @if($request->status != 'Ditolak') disabled @endif required>{{$va->akun}}</textarea>
     </div>
+    @if($va->nota_dinas != '')
     <div class="col-md-12 mb-2">
         <label for="">Surat Permohonan / Nota Dinas/ Dokumen Hasil VA*</label><br/>
         <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$va->nota_dinas}}"  data-title="Nota Dinas" type="button">Lihat File</button>
@@ -19,4 +20,5 @@
         <input type="file" name="nota_dinas" class="form-control" accept="application/pdf" max-size="2048">
         @endif
     </div>
+    @endif
 </div>

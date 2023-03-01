@@ -26,8 +26,8 @@
                             <textarea name="akun" id="" cols="30" rows="3"class="form-control" required></textarea>
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label for="">Surat Permohonan / Nota Dinas*</label>
-                            <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
+                            <label for="">Surat Permohonan / Nota Dinas @if(!Session::get('isPusdatin')) * @endif</label>
+                            <input type="file" name="nota_dinas" class="form-control" @if(!Session::get('isPusdatin')) required @endif accept="application/pdf" max-size="2048">
                         </div>
                     </div>
                     <input type="hidden" name="id" value="{{$layanan->id}}">

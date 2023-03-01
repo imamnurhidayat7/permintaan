@@ -382,10 +382,10 @@ class RequestController extends Controller{
             return Datatables::of($request)
                     ->addColumn('action', function($row){
                         if(Session::get('role') == 'pemohon' || Session::get('role') == '') {
-                            $url = url('request/detail', $row->id);
+                            $url = url('my-request/detail', $row->id);
                         }
                         else{
-                            $url = url('my-request/detail', $row->id);
+                            $url = url('request/detail', $row->id);
                         }
                         
                         $btn = '<a href="'.$url.'" class="btn btn-light waves-effect waves-light" role="button"><i class="mdi mdi-eye d-block font-size-16"></i> </a>';
