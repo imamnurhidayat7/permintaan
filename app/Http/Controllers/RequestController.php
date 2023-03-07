@@ -1230,11 +1230,17 @@ class RequestController extends Controller{
                         if($check_email){
                             if($check_email->email != null){
                                 $validasi = explode('@', $check_email->email);
-                                if($validasi[1] == 'atrbpn.go.id'){
-                                    $status = 'Sudah Ada Email';
-                                    $count1++;
+                                try{
+                                    if($validasi[1] == 'atrbpn.go.id'){
+                                        $status = 'Sudah Ada Email';
+                                        $count1++;
+                                    }
+                                    else{
+                                        $status = 'Belum Ada Email';
+                                        $count2++;
+                                    }
                                 }
-                                else{
+                                catch(\Exception $e){
                                     $status = 'Belum Ada Email';
                                     $count2++;
                                 }
