@@ -98,7 +98,7 @@ class RequestController extends Controller{
         $data['request'] = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Selesai')->get();
         $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
         if ($request->ajax()) {
-            $request = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Selesai')->get();
+            $request = Req::with('user')->with('layanan')->with('meta')->where('id_user_disposisi', Session::get('id'))->where('status', '!=', 'Ditutup')->where('status', '!=', 'Ditolak')->where('status', '!=', 'Selesai')->get();
             return Datatables::of($request)
                     ->addColumn('action', function($row){
                         $url = url('request/detail', $row->id);
