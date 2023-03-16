@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label for="">Surat Permohonan / Nota Dinas @if(!Session::get('isPusdatin')) * @endif</label>
-                            <input type="file" name="nota_dinas" class="form-control" @if(!Session::get('isPusdatin')) required @endif accept="application/pdf" max-size="2048">
+                            <input type="file" name="nota_dinas" class="file-upload form-control" @if(!Session::get('isPusdatin')) required @endif accept="application/pdf" max-size="2048">
                         </div>
                     </div>
                     <input type="hidden" name="id" value="{{$layanan->id}}">

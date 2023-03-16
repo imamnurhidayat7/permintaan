@@ -163,7 +163,7 @@ $('.file-upload').on('change', function() {
     const size = 
         (this.files[0].size / 1024 / 1024).toFixed(2);
 
-    if (size > 5) {
+    if (size > 2) {
         $.toast({
             heading: 'Gagal',
             text: 'ukuran file maksimal 2mb',

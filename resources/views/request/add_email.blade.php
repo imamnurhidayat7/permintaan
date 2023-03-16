@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-md-12 mb-2">
                             <label for="">Surat Rekomendasi / Nota Dinas*</label>
-                            <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
+                            <input type="file" name="nota_dinas" class="file-upload form-control" required accept="application/pdf" max-size="2048">
                         </div>
                     </div>
                     <input type="hidden" name="id" value="{{$layanan->id}}">
