@@ -817,6 +817,11 @@ class RequestController extends Controller{
                 $data['tahapan'] = 'Ditugaskan ke Pelaksana';
             }
 
+            if($req->layanan_id == '27' || $req->layanan_id == '29'){
+                $data['status'] = 'Sedang Diproses';
+                $data['tahapan'] = 'Ditugaskan ke Pelaksana';
+            }
+
             $pesan = 'Request #'.$req->no_req.' dibuka kembali';
             $judul = 'Pesan Baru';
             $url = 'request/detail/'.$data['id_request'];
