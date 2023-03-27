@@ -132,10 +132,14 @@
                                 <label for="">Tanggal Selesai*</label>
                                 <input autocomplete="off" type="text" id="datepicker2" name="tanggal_selesai" class="form-control" required>
                             </div>
-                            <div class="col-md-12 mb-2">
+                            <div class="col-md-6 mb-2">
                             <label for="">NDA*</label>
                             <input type="file" name="nda" class="file-upload form-control" required accept="application/pdf" max-size="2048">
-                        </div>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                            <label for="">Surat Tugas*</label>
+                            <input type="file" name="surat_tugas" class="file-upload form-control" required accept="application/pdf" max-size="2048">
+                            </div>
                             </div>
                             <hr>
                             <!-- aa -->

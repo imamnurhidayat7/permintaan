@@ -1069,11 +1069,12 @@ class RequestController extends Controller{
         $layanan = Layanan::find($data['id']);
         
         foreach(request()->allFiles() as $row => $value){
-            $value2 = $value[0]['nda'];
-            $file = uniqid().'_'.$value2->getClientOriginalName();
-            $value2->move(public_path('uploads'), $file);
-            $data[$row] = $file;
-            
+
+            foreach($value[0] as $row2 => $nilai){
+                $file = uniqid().'_'.$nilai->getClientOriginalName();
+                $nilai->move(public_path('uploads'), $file);
+                $data[$row2] = $file;
+            }
         }
 
         $insert_req = Req::create([
