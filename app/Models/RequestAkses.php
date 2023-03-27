@@ -19,6 +19,8 @@ class RequestAkses extends Model
         'tanggal_mulai',
         'tanggal_selesai',
         'kontak',
+        'keterangan',
+        'nda'
     ];
 
     public function request()

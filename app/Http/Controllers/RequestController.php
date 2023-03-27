@@ -1069,9 +1069,9 @@ class RequestController extends Controller{
         $layanan = Layanan::find($data['id']);
         
         foreach(request()->allFiles() as $row => $value){
-            
-            $file = uniqid().'_'.$value->getClientOriginalName();
-            $value->move(public_path('uploads'), $file);
+            $value2 = $value[0]['nda'];
+            $file = uniqid().'_'.$value2->getClientOriginalName();
+            $value2->move(public_path('uploads'), $file);
             $data[$row] = $file;
             
         }

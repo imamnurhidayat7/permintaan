@@ -65,6 +65,14 @@
         <label for="">Tanggal Selesai</label>
         <input type="text" id="datepicker2" value="{{$akses->tanggal_selesai}}" name="tanggal_selesai" class="form-control" required>
     </div>
+    <div class="col-md-12 mb-4">
+    <label for="">NDA*</label><br/>
+    <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$akses->file}}"  data-title="NDA" type="button">Lihat File</button><br/>
+    @if($request->status == 'Ditolak')
+    <label for="">Ganti File</label>
+    <input type="file" name="nda" class="form-control" accept="application/pdf" max-size="2048">
+    @endif
+</div>
     </div>
 
     <hr class="mt-4">

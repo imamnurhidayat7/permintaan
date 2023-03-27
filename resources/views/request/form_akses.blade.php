@@ -64,7 +64,11 @@
         <label for="">Tanggal Selesai</label>
         <input type="text" id="datepicker2" disabled value="{{$akses->tanggal_selesai}}" name="tanggal_selesai" class="form-control" required>
     </div>
+    <div class="col-md-12 mb-4">
+    <label for="">NDA*</label><br/>
+    <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$akses->file}}"  data-title="NDA" type="button">Lihat File</button><br/>
     </div>
+</div>
 
     <hr class="mt-4">
     <h5 class="text-center">DATA PERSONEL</h5>
