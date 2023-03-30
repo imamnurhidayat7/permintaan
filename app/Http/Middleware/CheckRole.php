@@ -39,6 +39,12 @@ class CheckRole
             //         return $next($request);
             //     }
             // }
+            if($role == 'pusdatin'){
+                $user = User::find(Auth::user()->id);
+                if($user->buat_tiket == 1){
+                    return $next($request);
+                }
+            }
         }
 
         //Alert::error('Anda tidak berhak mengakses halaman ini');

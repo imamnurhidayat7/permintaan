@@ -80,16 +80,16 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::post('tambah-akses', [RequestController::class, 'tambahAkses'])->middleware('checkRole:pemohon');
     Route::post('tambah-jaringan', [RequestController::class, 'tambahJaringan'])->middleware('checkRole:pemohon');
     Route::post('tambah-keamanan-siber', [RequestController::class, 'tambahKeamananSiber'])->middleware('checkRole:pemohon');
-    Route::post('update-request', [RequestController::class, 'updateRequest'])->middleware('checkRole:pemohon');
-    Route::get('my-request', [RequestController::class, 'showMyRequest'])->middleware('checkRole:pemohon');
-    Route::get('my-request/detail/{id}', [RequestController::class, 'detailRequest'])->middleware('checkRole:pemohon');
-    Route::post('tutup-request', [RequestController::class, 'tutupRequest'])->middleware('checkRole:pemohon');
-    Route::post('buka-request', [RequestController::class, 'bukaRequest'])->middleware('checkRole:pemohon');
+    Route::post('update-request', [RequestController::class, 'updateRequest'])->middleware('checkRole:pemohon,pusdatin');
+    Route::get('my-request', [RequestController::class, 'showMyRequest'])->middleware('checkRole:pemohon,pusdatin');
+    Route::get('my-request/detail/{id}', [RequestController::class, 'detailRequest'])->middleware('checkRole:pemohon,pusdatin');
+    Route::post('tutup-request', [RequestController::class, 'tutupRequest'])->middleware('checkRole:pemohon,pusdatin');
+    Route::post('buka-request', [RequestController::class, 'bukaRequest'])->middleware('checkRole:pemohon,pusdatin');
     Route::post('setujui-request', [RequestController::class, 'setujuiRequest'])->middleware('checkRole:admin,kasi,pelaksana');
     Route::post('tolak-request', [RequestController::class, 'tolakRequest'])->middleware('checkRole:admin,kasi,pelaksana');
 
     //catatan
-    Route::post('tambah-catatan', [RequestController::class, 'tambahCatatan'])->middleware('checkRole:pemohon,customerservice,pelaksana,admin');
+    Route::post('tambah-catatan', [RequestController::class, 'tambahCatatan'])->middleware('checkRole:pemohon,customerservice,pelaksana,admin,pusdatin');
     Route::post('tambah-disposisi', [RequestController::class, 'tambahDisposisi'])->middleware('checkRole:customerservice,pelaksana,kasi,kabid,kapus,admin');
 
     //user
