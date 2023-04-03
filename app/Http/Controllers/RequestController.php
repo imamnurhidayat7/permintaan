@@ -410,13 +410,22 @@ class RequestController extends Controller{
 
                         return $row->created_at;
                     })
+
+                    ->addColumn('info', function($row){
+                        $info = '-';
+                        if($row->layanan_id == '29'){
+                            $va = RequestVA::where('id_request', $row->id)->first();
+                            $info = $va->aplikasi;
+                        }
+                        return $info;
+                    })
                     
                     ->filter(function ($instance) use ($request) {
                         if($request->get('status') != '') {
                             $instance->where('status', $request->get('status'));
                         }
                     })
-                    ->rawColumns(['action', 'layanan', 'created_at', 'pelaksana'])
+                    ->rawColumns(['action', 'layanan', 'created_at', 'pelaksana', 'info'])
                     ->make(true);
         }
 

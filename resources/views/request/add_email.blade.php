@@ -28,7 +28,7 @@
                             <select name="jenis_email" id="jenis_email" class="form-control" required>
                                 <option value="">Pilih Jenis Email</option>
                                 <option value="Email Pegawai">Email Pegawai</option>
-                                <option value="Email Kedinasan">Email Kedinasan</option>
+                                <option value="Email Kedinasan">Email Satker</option>
                             </select>
                         </div>
                         <div id="pendaftaran">

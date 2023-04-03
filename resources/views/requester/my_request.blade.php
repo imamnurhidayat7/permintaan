@@ -34,7 +34,7 @@
                         </div>
                         </div>
 
-                        <table id="datatable3" class="table table-bordered dt-responsive  nowrap w-100">
+                        <table id="datatable3" class="table table-bordered nowrap w-100">
                         <thead>
                             <tr>
                             <th>Nomor</th>
@@ -42,6 +42,7 @@
                             <th>Layanan</th>
                             <th>Status</th>
                             <th>Pelaksana</th>
+                            <th>Info</th>
                             <th>Action</th>
                             </tr>
                         </thead>
@@ -130,6 +131,7 @@
             {data: 'layanan', name: 'layanan'},
             {data: 'status', name: 'status'},
             {data: 'pelaksana', name: 'pelaksana'},
+            {data: 'info', name: 'info'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
            
         ]
