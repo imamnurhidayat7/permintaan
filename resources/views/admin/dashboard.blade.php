@@ -157,6 +157,24 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="text-muted fw-medium">Laporan</p>
+                                <a href="{{url('laporan')}}" class="btn btn-primary mt-2 waves-effect waves-light btn-sm">Details<i class="mdi mdi-arrow-right ms-1"></i></a>
+                            </div>
+
+                            <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
+                                <span class="avatar-title rounded-circle bg-primary">
+                                    <i class="bx bx-copy-alt font-size-24"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!-- end row -->
     </div>
 </div>

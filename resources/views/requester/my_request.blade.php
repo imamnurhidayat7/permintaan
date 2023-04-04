@@ -49,7 +49,7 @@
                         <tbody>
                         
                         </tbody>
-                    </table>
+                        </table>
                         </div>
                     </div>
                 </div> <!-- end col -->
@@ -109,56 +109,56 @@
  
     </script>
     <script type="text/javascript">
-  $(function () {
-    
-    var table = $('#datatable3').DataTable({
-        processing: true,
-        serverSide: true,
-        "order": [[ 0, "desc" ]],
-        ajax: {
-            url : "{{url('my-request')}}",
-            method : 'GET',
-            data : function (d) {
-                d.status = $('#filter-status').val();
+    $(function () {
+        
+        var table = $('#datatable3').DataTable({
+            processing: true,
+            serverSide: true,
+            "order": [[ 0, "desc" ]],
+            ajax: {
+                url : "{{url('my-request')}}",
+                method : 'GET',
+                data : function (d) {
+                    d.status = $('#filter-status').val();
+                },
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
             },
-            error: function (request, status, error) {
-                console.log(request.responseText);
-            }
-        },
-        columns: [
-            {data: 'no_req', name: 'no_req'},
-            {data: 'created_at', name: 'created_at'},
-            {data: 'layanan', name: 'layanan'},
-            {data: 'status', name: 'status'},
-            {data: 'pelaksana', name: 'pelaksana'},
-            {data: 'info', name: 'info'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-           
-        ]
-    });
-
-    $('#filter-layanan').on( 'change', function () {
-        table
-            .columns(2)
-            .search( this.value )
-            .draw();
-    });
-
-    $('#filter-status').on( 'change', function () {
-        table
-            .columns(3)
-            .search( this.value )
-            .draw();
-    });
-
-    $(document).on('click', '.btnReAssign', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            $('#assign_id').val(id);
-            $('#modalAssign').modal('show');
+            columns: [
+                {data: 'no_req', name: 'no_req'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'layanan', name: 'layanan'},
+                {data: 'status', name: 'status'},
+                {data: 'pelaksana', name: 'pelaksana'},
+                {data: 'info', name: 'info'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            
+            ]
         });
-    
-  });
+
+        $('#filter-layanan').on( 'change', function () {
+            table
+                .columns(2)
+                .search( this.value )
+                .draw();
+        });
+
+        $('#filter-status').on( 'change', function () {
+            table
+                .columns(3)
+                .search( this.value )
+                .draw();
+        });
+
+        $(document).on('click', '.btnReAssign', function (e) {
+                e.preventDefault();
+                var id = $(this).data('id');
+                $('#assign_id').val(id);
+                $('#modalAssign').modal('show');
+            });
+        
+    });
 </script>
     @endsection
     </body>

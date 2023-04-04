@@ -119,6 +119,9 @@
                                     </a> 
                                     <a class="nav-link" href="{{url('my-request')}}" id="topnav-dashboard" role="button">
                                         <span key="t-dashboards">Request Saya</span>
+                                    </a>
+                                    <a class="nav-link" href="{{url('laporan')}}" id="topnav-dashboard" role="button">
+                                        <span key="t-dashboards">Laporan Request</span>
                                     </a> 
                                 </div>
                             </li>

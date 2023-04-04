@@ -7,6 +7,7 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LaporanController;
 use Vizir\KeycloakWebGuard\Controllers\AuthController as Keycloak;
 
 /*
@@ -87,6 +88,8 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::post('buka-request', [RequestController::class, 'bukaRequest'])->middleware('checkRole:pemohon,pusdatin');
     Route::post('setujui-request', [RequestController::class, 'setujuiRequest'])->middleware('checkRole:admin,kasi,pelaksana');
     Route::post('tolak-request', [RequestController::class, 'tolakRequest'])->middleware('checkRole:admin,kasi,pelaksana');
+    Route::get('laporan', [LaporanController::class, 'laporan'])->middleware('checkRole:admin');
+
 
     //catatan
     Route::post('tambah-catatan', [RequestController::class, 'tambahCatatan'])->middleware('checkRole:pemohon,customerservice,pelaksana,admin,pusdatin');
