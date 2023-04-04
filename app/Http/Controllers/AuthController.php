@@ -129,6 +129,7 @@ class AuthController extends Controller
         Session::put('name', $user->name);
         Session::put('id', $user->id);
         Session::put('role', $user->role);
+        Session::put('kantor', $user->kantor);
         Session::put('isUserPusat', $data['isUserPusat']);
 
         if($user->role == 'admin'){

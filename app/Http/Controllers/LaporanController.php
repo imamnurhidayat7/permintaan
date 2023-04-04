@@ -37,6 +37,12 @@ class LaporanController extends Controller{
 
     public function laporan(Request $request){
         $data['request'] = Req::all();
+
+        // foreach($data['request'] as $row){
+        //     $user = DB::table('users')->select('kantor')->where('id', $row->user_id)->first();
+        //     Req::where('id', $row->id)->update(['kantor'=>$user->kantor]);
+        // }
+
         $data['ditutup'] = Req::where('status', 'Ditutup')->count();
         $data['selesai'] = Req::where('status', 'Selesai')->count();
         $data['proses'] = Req::where('status', 'Sedang Diproses')->count();

@@ -890,6 +890,7 @@ class RequestController extends Controller{
             'tahapan' => 'Menunggu Pengecekan Berkas',
             'no_req' => $no_req,
             'jenis' => $data['jenis'],
+            'kantor' => Session::get('kantor'),
             'id_user_disposisi' => $layanan->id_pelaksana
         ]);
 
@@ -983,6 +984,7 @@ class RequestController extends Controller{
             'status' => 'Sedang Diproses',
             'tahapan' => 'Sedang Diproses',
             'no_req' => $no_req,
+            'kantor' => Session::get('kantor'),
             'id_user_disposisi' => $layanan->id_pelaksana
         ]);
 
@@ -1093,6 +1095,7 @@ class RequestController extends Controller{
             'tahapan' => 'Menunggu Pengecekan Berkas',
             'no_req' => $no_req,
             'jenis' => $data['jenis'],
+            'kantor' => Session::get('kantor'),
             'id_user_disposisi' => $layanan->id_pelaksana
         ]);
 
@@ -1216,6 +1219,7 @@ class RequestController extends Controller{
             'tahapan' => 'Sedang Diproses',
             'no_req' => $no_req,
             'jenis' => $data['jenis'],
+            'kantor' => Session::get('kantor'),
             'id_user_disposisi' => $layanan->id_pelaksana
         ]);
 

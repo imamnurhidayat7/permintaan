@@ -23,7 +23,8 @@ class Request extends Model
         'jenis',
         'type',
         'status',
-        'file'
+        'file',
+        'kantor'
     ];
 
     public function layanan()
