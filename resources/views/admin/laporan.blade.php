@@ -128,26 +128,27 @@
         
             
     var table = $('#datatable3').DataTable({
-        "order": [[ 1, "desc" ]],
         processing: true,
-            serverSide: true,
-            "order": [[ 0, "desc" ]],
-            ajax: {
-                url : "{{url('laporan')}}",
-                method : 'GET',
-                error: function (request, status, error) {
-                    console.log(request.responseText);
-                }
-            },
-            columns: [
-                {data: 'kantor', name: 'kantor'},
-                {data: 'total_req', name: 'total_req'},
-                {data: 'akses', name: 'akses'},
-                {data: 'email', name: 'email'},
-                {data: 'server', name: 'server'},
-                {data: 'va', name: 'va'},
-            
-            ]
+        serverSide: true,
+        "order": [[ 0, "desc" ]],
+        ajax: {
+            url : "{{url('laporan')}}",
+            method : 'GET',
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        },
+        columns: [
+            {data: 'kantor', name: 'kantor'},
+            {data: 'total_req', name: 'total_req'},
+            {data: 'akses', name: 'akses'},
+            {data: 'email', name: 'email'},
+            {data: 'server', name: 'server'},
+            {data: 'va', name: 'va'},
+        
+        ],
+        "order": [[ 1, "desc" ]],
+
     });
         
     
