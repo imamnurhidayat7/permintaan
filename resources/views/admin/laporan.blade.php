@@ -101,23 +101,22 @@
 <div class="card py-4">
     <div class="card-body">
     <a href="{{url()->previous()}}" class="btn btn-sm btn-default"><i class="mdi mdi-arrow-left"></i> Kembali</a>
-    <h4 class="fw-medium mb-4 text-center">Data Request</h4>
+    <h4 class="fw-medium mb-4 text-center">Laporan Permintaan Berdasarkan Unit Kerja</h4>
     
 
-    <table id="datatable3" class="table table-bordered nowrap w-100">
+    <table id="datatable3" class="table table-bordered w-100">
     <thead>
         <tr>
         <th>Kantor</th>
         <th>Jumlah Request</th>
+        <th>Hak Akses</th>
+        <th>Email</th>
+        <th>Server</th>
+        <th>VA</th>
         </tr>
     </thead>
     <tbody>
-    @foreach($reqbykantor as $row)
-    <tr>
-        <td>{{$row->kantor}}</td>
-        <td>{{$row->total_req}}</td>
-    </tr>
-    @endforeach
+
     </tbody>
     </table>
     </div>
@@ -130,6 +129,25 @@
             
     var table = $('#datatable3').DataTable({
         "order": [[ 1, "desc" ]],
+        processing: true,
+            serverSide: true,
+            "order": [[ 0, "desc" ]],
+            ajax: {
+                url : "{{url('laporan')}}",
+                method : 'GET',
+                error: function (request, status, error) {
+                    console.log(request.responseText);
+                }
+            },
+            columns: [
+                {data: 'kantor', name: 'kantor'},
+                {data: 'total_req', name: 'total_req'},
+                {data: 'akses', name: 'akses'},
+                {data: 'email', name: 'email'},
+                {data: 'server', name: 'server'},
+                {data: 'va', name: 'va'},
+            
+            ]
     });
         
     

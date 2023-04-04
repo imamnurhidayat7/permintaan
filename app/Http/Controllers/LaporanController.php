@@ -45,12 +45,23 @@ class LaporanController extends Controller{
         $data['akses'] = Req::where('layanan_id', '25')->count();
         $data['va'] = Req::where('layanan_id', '29')->count();
         $data['server'] = Req::where('layanan_id', '26')->count();
-        $data['reqbykantor'] = Req::join('users', 'users.id', '=', 'request.user_id')
-                                ->select('users.kantor as kantor', DB::raw('COUNT(request.id) as total_req'))
+        $data2 = Req::join('users', 'users.id', '=', 'request.user_id')
+                                ->select('users.kantor as kantor', 
+                                DB::raw('COUNT(request.id) as total_req'), \
+                                DB::raw("(SELECT COUNT(*) as akses FROM request r join users u ON r.user_id = u.id WHERE u.kantor = users.kantor AND r.layanan_id = '25') "),
+                                DB::raw("(SELECT COUNT(*) as server FROM request r join users u ON r.user_id = u.id WHERE u.kantor = users.kantor AND r.layanan_id = '26') "),
+                                DB::raw("(SELECT COUNT(*) as email FROM request r join users u ON r.user_id = u.id WHERE u.kantor = users.kantor AND r.layanan_id = '27') "),
+                                DB::raw("(SELECT COUNT(*) as va FROM request r join users u ON r.user_id = u.id WHERE u.kantor = users.kantor AND r.layanan_id = '29') ")
+                                )
                                 ->groupBy('users.kantor')
                                 ->get();
 
         //dd($data);
+        if ($request->ajax()) {
+            return Datatables::of($data2)
+            
+            ->make(true);
+        }
         return view('admin.laporan')->with($data);
     }
 }
