@@ -417,6 +417,39 @@ class RequestController extends Controller{
                             $va = RequestVA::where('id_request', $row->id)->first();
                             $info = $va->aplikasi;
                         }
+                        if($row->layanan_id == '26'){
+                            $server = RequestServer::where('id_request', $row->id)->first();
+                            $info = $server->aplikasi;
+                        }
+                        else if($row->layanan_id == '25'){
+                            $akses = RequestAkses::where('id_request', $row->id)->first();
+                            if($akses->kategori == 'Pihak Ketiga'){
+                                $info = $akses->nama_pekerjaan;
+                            }
+                            else if($akses->kategori == 'Internal'){
+                                $detail = DetailRequestAkses::select('nama')->where('id_request_akses',$akses->id)->get();
+                                $info = "<ul>";
+                                foreach($detail as $row){
+                                    $info = $info."<li>".$row->nama."</li>";
+                                }
+                                $info = $info."</ul>";
+                            }
+                            
+                        }
+                        else if($row->layanan_id == '27'){
+                            $email = RequestEmail::select('id')->where('id_request', $row->id)->first();
+                            $detail = DetailRequestEmail::select('nama','nip','status')->where('id_request_email',$email->id)->get();
+                            $info = "<ul>";
+                            foreach($detail as $row){
+                                if($row->nama != ''){
+                                    $info = $info."<li>".$row->nama."</li>";
+                                }
+                                else{
+                                    $info = $info."<li>".$row->nip." (".$row->status.")</li>";
+                                } 
+                            }
+                            $info = $info."</ul>";
+                        }
                         return $info;
                     })
                     

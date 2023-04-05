@@ -1,4 +1,4 @@
-@extends('admin.master_admin')
+@extends(Session::get('role').'.master_'.Session::get('role'))
 
 @section('content')
 <div class="row">

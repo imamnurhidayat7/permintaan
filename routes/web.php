@@ -52,7 +52,7 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->middleware('checkRole:admin');
     Route::get('admin/request', [AdminController::class, 'showRequestList'])->middleware('checkRole:admin');
     Route::get('admin/request/detail/{id}', [AdminController::class, 'requestDetail'])->middleware('checkRole:admin');
-    Route::get('request/detail/{id}', [RequestController::class, 'requestDetail'])->middleware('checkRole:admin,kasi,kabid,kapus,pelaksana,pemohon');
+    Route::get('request/detail/{id}', [RequestController::class, 'requestDetail'])->middleware('checkRole:admin,kasi,kabid,kapus,pelaksana,pemohon,pejabat');
 
 
     Route::post('admin/request/update', [AdminController::class, 'updateRequest'])->middleware('checkRole:admin');
@@ -82,13 +82,13 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::post('tambah-jaringan', [RequestController::class, 'tambahJaringan'])->middleware('checkRole:pemohon');
     Route::post('tambah-keamanan-siber', [RequestController::class, 'tambahKeamananSiber'])->middleware('checkRole:pemohon');
     Route::post('update-request', [RequestController::class, 'updateRequest'])->middleware('checkRole:pemohon,pusdatin');
-    Route::get('my-request', [RequestController::class, 'showMyRequest'])->middleware('checkRole:pemohon,pusdatin');
+    Route::get('my-request', [RequestController::class, 'showMyRequest'])->middleware('checkRole:pemohon');
     Route::get('my-request/detail/{id}', [RequestController::class, 'detailRequest'])->middleware('checkRole:pemohon,pusdatin');
     Route::post('tutup-request', [RequestController::class, 'tutupRequest'])->middleware('checkRole:pemohon,pusdatin');
     Route::post('buka-request', [RequestController::class, 'bukaRequest'])->middleware('checkRole:pemohon,pusdatin');
     Route::post('setujui-request', [RequestController::class, 'setujuiRequest'])->middleware('checkRole:admin,kasi,pelaksana');
     Route::post('tolak-request', [RequestController::class, 'tolakRequest'])->middleware('checkRole:admin,kasi,pelaksana');
-    Route::get('laporan', [LaporanController::class, 'laporan'])->middleware('checkRole:admin');
+    Route::get('laporan', [LaporanController::class, 'laporan'])->middleware('checkRole:admin,pejabat');
 
 
     //catatan
@@ -126,8 +126,13 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::get('pelaksana/request', [RequestController::class, 'showRequestList'])->middleware('checkRole:pelaksana');
     Route::get('pelaksana/request-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:pelaksana');
 
-    Route::get('request', [RequestController::class, 'showRequestList'])->middleware('checkRole:admin,pelaksana,kasi,kabid');
+    Route::get('request', [RequestController::class, 'showRequestList'])->middleware('checkRole:admin,pelaksana,kasi,kabid,pejabat');
     Route::post('tugaskan-request', [RequestController::class, 'reassignRequest'])->middleware('checkRole:admin');
     Route::get('tunggakan-saya', [RequestController::class, 'showRequestAssignToMe'])->middleware('checkRole:admin,pelaksana');
-});
+
+    //pejabat
+    Route::get('pejabat/dashboard', [PageController::class, 'dashboard_pejabat'])->middleware('checkRole:pejabat');
+}); Route::get('pejabat/request', [RequestController::class, 'showRequestList'])->middleware('checkRole:pejabat');
+
+
 

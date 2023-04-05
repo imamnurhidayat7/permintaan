@@ -64,6 +64,7 @@
                                     <option value="">Pilih Role</option>
                                     @if(Session::get('isSuperAdmin'))
                                     <option value="admin">Admin</option>
+                                    <option value="pejabat">Pejabat</option>
                                     @endif
                                     <option value="pelaksana">Pelaksana</option>
                                     <option value="kasi">Kepala Subbidang</option>
@@ -115,6 +116,7 @@
                                     <option value="">Pilih Role</option>
                                     @if(Session::get('isSuperAdmin'))
                                     <option value="admin">Admin</option>
+                                    <option value="pejabat">Pejabat</option>
                                     @endif
                                     <option value="pelaksana">Pelaksana</option>
                                     <option value="kasi">Kepala Subbidang</option>

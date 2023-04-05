@@ -136,6 +136,10 @@ class AuthController extends Controller
             Session::put('jabatan', 'Admin');
             return redirect('admin/dashboard');
         }
+        if($user->role == 'pejabat'){
+            Session::put('jabatan', 'pejabat');
+            return redirect('pejabat/dashboard');
+        }
         else if($user->role=='customerservice'){
             Session::put('jabatan', 'Customer Service');
             return redirect('cs/dashboard');

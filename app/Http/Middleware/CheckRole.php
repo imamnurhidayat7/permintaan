@@ -33,18 +33,20 @@ class CheckRole
             if( $user == $role){
                 return $next($request);
             }
-            // if($role == 'pemohon'){
+            if($role == 'pemohon'){
+                $user = User::find(Auth::user()->id);
+                if($user != 'pejabat'){
+                    if($user->buat_tiket == 1){
+                        return $next($request);
+                    }
+                }
+            }
+            // if($role == 'pusdatin'){
             //     $user = User::find(Auth::user()->id);
             //     if($user->buat_tiket == 1){
             //         return $next($request);
             //     }
             // }
-            if($role == 'pusdatin'){
-                $user = User::find(Auth::user()->id);
-                if($user->buat_tiket == 1){
-                    return $next($request);
-                }
-            }
         }
 
         //Alert::error('Anda tidak berhak mengakses halaman ini');

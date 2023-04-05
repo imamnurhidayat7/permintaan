@@ -39,6 +39,10 @@ class PageController extends Controller
         return view('pelaksana.dashboard');
     }
 
+    public function dashboard_pejabat(){
+        return view('pejabat.dashboard');
+    }
+
     public function error(){
         return view('error_page');
     }

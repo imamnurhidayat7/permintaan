@@ -37,12 +37,13 @@
                         <table id="datatable3" class="table table-bordered dt-responsive  nowrap w-100">
                         <thead>
                             <tr>
+                            <th>Action</th>
                             <th>Nomor</th>
                             <th>Tanggal</th>
                             <th>Layanan</th>
                             <th>Status</th>
                             <th>Pelaksana</th>
-                            <th>Action</th>
+                            <th>Info</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,8 +88,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
-                            
+                            @endforeach                    
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
     var table = $('#datatable3').DataTable({
         processing: true,
         serverSide: true,
-        "order": [[ 0, "desc" ]],
+        "order": [[ 1, "desc" ]],
         ajax: {
             url : "{{url('my-request')}}",
             method : 'GET',
@@ -126,26 +126,27 @@
             }
         },
         columns: [
+            {data: 'action', name: 'action', orderable: false, searchable: false},
             {data: 'no_req', name: 'no_req'},
             {data: 'created_at', name: 'created_at'},
             {data: 'layanan', name: 'layanan'},
             {data: 'status', name: 'status'},
             {data: 'pelaksana', name: 'pelaksana'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'info', name: 'info'},
            
         ]
     });
 
     $('#filter-layanan').on( 'change', function () {
         table
-            .columns(2)
+            .columns(3)
             .search( this.value )
             .draw();
     });
 
     $('#filter-status').on( 'change', function () {
         table
-            .columns(3)
+            .columns(4)
             .search( this.value )
             .draw();
     });

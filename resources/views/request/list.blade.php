@@ -9,7 +9,9 @@
                         <div class="card-body">
                         <a href="{{url()->previous()}}" class="btn btn-sm btn-default"><i class="mdi mdi-arrow-left"></i> Kembali</a>
                         <h4 class="fw-medium mb-4 text-center">Data Request Layanan</h4>
+                        @if(Session::get('role')  != 'pejabat')
                         <a class="btn btnTambah btn-sm btn-primary mb-4"> <i class="fa fa-plus"></i> Tambah Request</a>
+                        @endif
                         <div class="row">
                         <div class="col-md-4 mb-4 mt-4">
                             <label>Filter By Layanan</label>
