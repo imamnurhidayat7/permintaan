@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                                 <label for="basicpill-lastname-input">Bidang</label>
-                                <select name="id_bidang"  class="bidang form-control" required>
+                                <select name="id_bidang"  class="bidang form-control" >
                                     <option value="">Pilih Bidang</option>
                                     @foreach($bidang as $row)
                                     <option value="{{$row->id}}">{{$row->nama}}</option>
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                                 <label for="basicpill-lastname-input">Bidang</label>
-                                <select id="edit_id_bidang" name="id_bidang" class="bidang form-control"  required>
+                                <select id="edit_id_bidang" name="id_bidang" class="bidang form-control" >
                                     <option value="">Pilih Bidang</option>
                                     @foreach($bidang as $row)
                                     <option value="{{$row->id}}">{{$row->nama}}</option>
