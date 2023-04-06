@@ -14,7 +14,7 @@
                         
                        
                         <!-- <a class="btn btn-success btn-sm waves-effect mt-2 mr-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalEdit" data-tooltip="tooltip" title="Pesan"><i class="mdi mdi-wechat d-block font-size-16"></i></a> --> 
-                        @if($request->id_user_disposisi == Session::get('id'))
+                        @if($request->id_user_disposisi == Session::get('id') || Session::get('role') == 'admin')
                         <a class="btn btn-info btn-sm waves-effect mt-2 mr-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalUbahStatus" data-tooltip="tooltip" title="Pesan"><i class="mdi mdi-wechat d-block font-size-16"></i></a>    
                         @endif
                         <!-- <a class="btn btn-primary btn-sm waves-effect mt-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalEskalasi"><i class="mdi mdi-pencil d-block font-size-16"></i> </a> -->
