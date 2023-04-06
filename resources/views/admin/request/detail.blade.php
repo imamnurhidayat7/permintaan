@@ -11,7 +11,10 @@
                         <p>Tanggal dibuat : {{$request->created_at}}</p>
                         <button type="button" class="btn @if($request->status=='Dalam Proses') btn-warning @else btn-success @endif btn-sm btn-rounded waves-effect waves-light">{{$request->status}}</button>
                         <button type="button" class="btn btn-success btn-sm btn-rounded waves-effect waves-light">{{$request->tahapan}}</button><br/>
-                        </div>
+                        @if($request->id_user_disposisi == Session::get('id') || Session::get('role') == 'admin')
+                        <a class="btn btn-info btn-sm waves-effect mt-2 mr-2 waves-light" data-bs-toggle="modal" data-bs-target="#modalUbahStatus" data-tooltip="tooltip" title="Pesan"><i class="mdi mdi-wechat d-block font-size-16"></i></a>    
+                        @endif    
+                    </div>
                     </div>
                 </div> <!-- end col -->
                 <div class="col-md-8">
