@@ -101,7 +101,7 @@ class AuthController extends Controller
        
         if($user->role == ''){
             foreach($detail['resource_access']['dotnet-web']['roles'] as $row){
-                if($row == 'KepalaSubBagianTataUsaha' || $row == 'KabagTU'){
+                if($row == 'KepalaSubBagianTataUsaha' || $row == 'KabagTU' || $row == 'KepalaBagianHukumKepegawaiandanOrtala'){
                     $update = User::where('pegawaiid', $detail['atrbpn-profile']['pegawaiid'])->update(['role'=>'pemohon', 'buat_tiket'=>1]);
                 }
                 // else if($row == 'Administrator Pusdatin'){
