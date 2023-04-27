@@ -97,7 +97,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{url('kasi/request-saya')}}" id="topnav-dashboard" role="button"
+                                <a class="nav-link" href="{{url('tunggakan-saya')}}" id="topnav-dashboard" role="button"
                                     >
                                     <i class="bx bx-file me-2"></i><span key="t-dashboards">Tunggakan Request</span>
                                 </a>

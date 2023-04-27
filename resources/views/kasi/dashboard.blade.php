@@ -53,7 +53,7 @@
                         <div class="media">
                             <div class="media-body">
                                 <p class="text-muted fw-medium">Tunggakan Request</p>
-                                <a href="{{url('kasi/request-saya')}}" class="btn btn-primary mt-2 waves-effect waves-light btn-sm">Details<i class="mdi mdi-arrow-right ms-1"></i></a>
+                                <a href="{{url('tunggakan-saya')}}" class="btn btn-primary mt-2 waves-effect waves-light btn-sm">Details<i class="mdi mdi-arrow-right ms-1"></i></a>
                             </div>
 
                             <div class="avatar-sm rounded-circle bg-primary align-self-center mini-stat-icon">
