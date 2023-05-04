@@ -11,7 +11,7 @@
                             <h4 class="mb-0"></h4>
                         </div>
                     </div>
-                    <form action="{{url('tambah-akses')}}" method='post' class="outer-repeater" enctype="multipart/form-data">@csrf
+                    <form action="{{url('tambah-akses')}}" class="myForm" method='post' class="outer-repeater" enctype="multipart/form-data">@csrf
                         <div class="row outer" data-repeater-list="outer-group">
                         <div data-repeater-item class="outer">
                             <div class="row">
