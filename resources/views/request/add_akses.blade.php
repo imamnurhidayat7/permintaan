@@ -11,7 +11,7 @@
                             <h4 class="mb-0"></h4>
                         </div>
                     </div>
-                    <form action="{{url('tambah-akses')}}" method='post' class="outer-repeater" enctype="multipart/form-data">@csrf
+                    <form action="{{url('tambah-akses')}}" method='post' class="outer-repeater myForm" enctype="multipart/form-data">@csrf
                         <div class="row outer" data-repeater-list="outer-group">
                         <div data-repeater-item class="outer">
                             <div class="row">
@@ -109,6 +109,10 @@
                                 <div class="col-md-12 mb-2">
                                     <label for="">IP yang ingin diakses*</label>
                                     <textarea name="ip_address" id="" cols="30" rows="3" class="form-control"></textarea>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="">Attachment</label>
+                                    <input type="file" name="nda" class="file-upload form-control" accept="application/pdf" max-size="2048">
                                 </div>
                             </div>
                             <div id="pihak3">
