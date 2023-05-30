@@ -159,21 +159,37 @@ $('.myForm').on('submit', function () {
 });
 
 $('.file-upload').on('change', function() {
+    var filePath = this.files[0].name;
+    var allowedExtensions = /(\.pdf)$/i;
     
-    const size = 
-        (this.files[0].size / 1024 / 1024).toFixed(2);
-
-    if (size > 2) {
+    if (!allowedExtensions.exec(filePath)) {
         $.toast({
             heading: 'Gagal',
-            text: 'ukuran file maksimal 2mb',
+            text: 'File harus pdf',
             showHideTransition: 'plain',
             icon: 'error',
             position: 'top-right',
             stack:false,
         });
         $(this).val('');
-    } 
+    }
+    else{
+        const size = 
+        (this.files[0].size / 1024 / 1024).toFixed(2);
+
+        if (size > 2) {
+            $.toast({
+                heading: 'Gagal',
+                text: 'ukuran file maksimal 2mb',
+                showHideTransition: 'plain',
+                icon: 'error',
+                position: 'top-right',
+                stack:false,
+            });
+            $(this).val('');
+        } 
+    }
+
 });
    
 
