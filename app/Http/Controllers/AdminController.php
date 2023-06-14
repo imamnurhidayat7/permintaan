@@ -304,12 +304,19 @@ class AdminController extends Controller{
     }
 
     public function updateEmailSimpeg(Request $request){
-        $db = DB::connection('oracle_db');
-        $update = $db->update("UPDATE SIMPEG_2702.PEGAWAI SET EMAIL = '$request->email' WHERE NIPBARU = '$request->nip' ");
+        
+        $run = DB::transaction(function() use ($request){
+            $db = DB::connection('oracle_db');
+            $data_user = $db->selectOne("SELECT USERID FROM PEGAWAI.PEGAWAI WHERE PEGAWAIID = '$request->nip' ");
+            //dd($data_user);
+            $db->update("UPDATE SIMPEG_2702.PEGAWAI SET EMAIL = '$request->email' WHERE NIPBARU = '$request->nip' ");
+            $db->update("UPDATE KKPWEB.REGISTERUSERPERTANAHAN SET EMAIL = '$request->email' WHERE PEGAWAIID = '$request->nip' ");
+            $db->update("UPDATE USERS SET EMAIL = '$request->email' WHERE USERID = '$data_user->userid' ");
+            $db->update("UPDATE PEGAWAI SET EMAIL = '$request->email' WHERE PEGAWAIID = '$request->nip' ");
+        });
 
-        if($update){
-            Alert::success('Berhasil merubah email');
-            return redirect('aldi');
-        }
+        Alert::success('Berhasil merubah email');
+        return redirect('aldi');
+    
     }
 }
