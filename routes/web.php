@@ -89,6 +89,8 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     Route::post('setujui-request', [RequestController::class, 'setujuiRequest'])->middleware('checkRole:admin,kasi,pelaksana');
     Route::post('tolak-request', [RequestController::class, 'tolakRequest'])->middleware('checkRole:admin,kasi,pelaksana');
     Route::get('laporan', [LaporanController::class, 'laporan'])->middleware('checkRole:admin,pejabat');
+    Route::get('aldi', [AdminController::class, 'cariDataSimpeg'])->middleware('checkRole:admin');
+    Route::post('update-email-simpeg', [AdminController::class, 'updateEmailSimpeg'])->middleware('checkRole:admin');
 
 
     //catatan

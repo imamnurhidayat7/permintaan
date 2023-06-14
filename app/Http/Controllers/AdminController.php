@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Session;
 use Alert;
 use Illuminate\Support\Facades\DB;
 use File;
+use DataTables;
 
 class AdminController extends Controller{
     
@@ -262,5 +263,53 @@ class AdminController extends Controller{
         Alert::success('Status Request Berhasil Diubah');
         return redirect('admin/request/detail/'.$data['id']);
 
+    }
+
+    public function cariDataSimpeg(Request $request){
+        if ($request->ajax()) {
+            $store = DB::connection('oracle_db');
+            $data_simpeg  = [];
+
+            if($request->tipe == '' && $request->keyword ==''){
+                return '';
+            }
+
+            if($request->tipe == 'nip'){
+                $data_simpeg = $store->select("SELECT NAMA, NIPBARU AS NIP, EMAIL FROM SIMPEG_2702.PEGAWAI WHERE NIPBARU = '$request->keyword' ");
+            }
+            else if ($request->tipe == 'email'){
+                $data_simpeg = $store->select("SELECT NAMA, NIPBARU AS NIP, EMAIL FROM SIMPEG_2702.PEGAWAI WHERE EMAIL = '$request->keyword' ");
+            }
+            
+            return Datatables::of($data_simpeg)
+                    ->addColumn('action', function($row){
+                        $url = url('request/detail');
+                        $btn = '<a data-email="'.$row->email.'"  data-nip="'.$row->nip.'" class="btn btnEdit btn-sm btn-success waves-effect waves-light" role="button"><i class="mdi mdi-pencil d-block font-size-16"></i> </a>';
+                    
+                        return $btn;
+                    })
+                    ->addColumn('NAMA', function($row){
+                        return $row->nama;
+                    })
+                    ->addColumn('NIP', function($row){
+                        return $row->nip;
+                    })
+                    ->addColumn('EMAIL', function($row){
+                        return $row->email;
+                    })
+                    ->rawColumns(['action', 'NAMA', 'NIP', 'EMAIL'])
+                    ->make(true);
+        }
+        return view('admin.aldi');
+    }
+
+    public function updateEmailSimpeg(Request $request){
+        $db = DB::connection('oracle_db');
+        $update = $db->update("UPDATE SIMPEG_2702.PEGAWAI SET EMAIL = '$request->email' WHERE NIPBARU = '$request->nip' ");
+
+        if($update){
+            Alert::success('Berhasil merubah email');
+            return redirect('aldi');
+        }
     }
 }
