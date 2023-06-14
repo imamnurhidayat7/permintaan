@@ -112,11 +112,25 @@
             var keyword = $('#keyword').val();
 
             if(tipe === ""){
-                alert('Pilih tipe pencarian');
+                $.toast({
+                    heading: 'Gagal',
+                    text: 'Tipe pencarian harus dipilih',
+                    showHideTransition: 'plain',
+                    icon: 'error',
+                    position: 'top-left',
+                    stack:false,
+                });
             }
 
             else if(keyword === ""){
-                alert('Keyword belum diisi');
+                $.toast({
+                    heading: 'Gagal',
+                    text: 'Keyword harus diisi',
+                    showHideTransition: 'plain',
+                    icon: 'error',
+                    position: 'top-left',
+                    stack:false,
+                });
             }
 
             else{
