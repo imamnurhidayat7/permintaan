@@ -47,7 +47,6 @@ class AuthController extends Controller
             return Socialite::driver('keycloak')->redirect(); 
         }
         $detail = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $keycloak_user->token)[1]))),true);
-        
         $role = '';
         $nip = $detail['atrbpn-profile']['pegawaiid'];
         $foto = '';
@@ -101,7 +100,7 @@ class AuthController extends Controller
        
         if($user->role == ''){
             foreach($detail['resource_access']['dotnet-web']['roles'] as $row){
-                if($row == 'KepalaSubBagianTataUsaha' || $row == 'KabagTU' || $row == 'KepalaBagianHukumKepegawaiandanOrtala'){
+                if($row == 'KepalaSubBagianTataUsaha' || $row == 'KabagTU' || $row == 'KepalaBagianHukumKepegawaiandanOrtala' || $row == 'Kepala Bagian Keuangan dan Umum'){
                     $update = User::where('pegawaiid', $detail['atrbpn-profile']['pegawaiid'])->update(['role'=>'pemohon', 'buat_tiket'=>1]);
                 }
                 // else if($row == 'Administrator Pusdatin'){
