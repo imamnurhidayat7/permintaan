@@ -41,7 +41,7 @@
                             <th>Tanggal</th>
                             <th>Layanan</th>
                             <th>Status</th>
-                            <th>Pelakasana</th>
+                            <th>Pelaksana</th>
                             <th>Action</th>
                             </tr>
                         </thead>
