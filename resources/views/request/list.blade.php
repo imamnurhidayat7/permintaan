@@ -49,7 +49,7 @@
                             <!-- <th>Pemohon</th> -->
                             <th>Status</th>
                             <!-- <th>Tahapan</th> -->
-                            <th>Pelakasana</th>
+                            <th>Pelaksana</th>
                             <th>Action</th>
                             </tr>
                         </thead>
