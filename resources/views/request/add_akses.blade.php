@@ -21,7 +21,7 @@
                                     <select name="jenis" id="type" class="form-control" required>
                                         <option value="">Pilih Jenis Layanan</option>
                                         <option value="VPN">VPN</option>
-                                        <option value="Akses Jaringan">Akses Jaringan</option>
+                                        <!-- <option value="Akses Jaringan">Akses Jaringan</option> -->
                                         <!-- <option value="Lainnya">Lainnya</option> -->
                                     </select>
                                 </div>

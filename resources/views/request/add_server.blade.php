@@ -18,6 +18,7 @@
                             <select name="jenis" id="type" class="form-control" required>
                                 <option value="">Pilih Jenis Layanan</option>
                                 <option value="Layanan Pembuatan Server Virtual/Hosting">Layanan Pembuatan server virtual/hosting</option>
+                                <option value="Layanan Penambahan Kapasitas Server Virtual/Hosting">Layanan Penambahan Kapasitas server virtual/hosting</option>
                                 <option value="Layanan Pembuatan Subdomain">Layanan Pembuatan Subdomain</option>
                             </select>
                         </div>
