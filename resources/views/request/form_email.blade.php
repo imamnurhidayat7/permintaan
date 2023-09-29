@@ -37,7 +37,7 @@
             <td>{{$row->status}} {{$row->email}}</td>
             <td>
                 @if($row->status == 'Belum Ada Email')
-                    @if($request->status == 'Sedang Diproses' && Session::get('id') == $request->layanan->id_pelaksana)
+                    @if($request->status == 'Sedang Diproses' && Session::get('id') == $request->id_user_disposisi)
                     <a class="btn btn-success btn-sm waves-effect mt-2 mr-2 waves-light btn-tambahEmail" data-id="{{$row->id}}" data-nip="{{$row->nip}}" data-tooltip="tooltip" title="Tambah Email"><i class="mdi mdi-plus d-block font-size-16"></i></a>    
                     @endif
                 @endif
