@@ -13,7 +13,11 @@
                         <a class="btn btnTambah btn-sm btn-primary mb-4"> <i class="fa fa-plus"></i> Tambah Request</a>
                         @endif
                         <div class="row">
-                        <div class="col-md-4 mb-4 mt-4">
+                        <div class="col-md-3 mb-4 mt-4">
+                            <label>Filter By No. Request</label>
+                           <input type="text" class = "form-control" id="filter-nomor">
+                        </div>
+                        <div class="col-md-3 mb-4 mt-4">
                             <label>Filter By Layanan</label>
                             <select class="form-control select2 filterlayanan" id="filter-layanan">
                                 <option value="">Semua Layanan</option>
@@ -22,7 +26,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mb-4 mt-4">
+                        <div class="col-md-3 mb-4 mt-4">
                             <label>Filter By Status</label>
                             <select class="form-control select2 filterstatus" id="filter-status" name="status">
                                 <option value="">Semua</option>
@@ -150,6 +154,7 @@
             method : 'GET',
             data : function (d) {
                 d.status = $('#filter-status').val();
+                d.search = $('input[type="search"]').val();
             },
             error: function (request, status, error) {
                 console.log(request.responseText);
@@ -179,6 +184,15 @@
             .search( this.value )
             .draw();
     });
+
+    $('#filter-nomor').on('keyup', function(){
+        table
+            .columns(0)
+            .search( this.value )
+            .draw();
+    });
+
+    $('#datatable3_filter').hide();
 
     $(document).on('click', '.btnReAssign', function (e) {
             e.preventDefault();
