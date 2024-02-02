@@ -20,7 +20,7 @@
                                     <label for="">Jenis Layanan*</label>
                                     <select name="jenis" id="type" class="form-control" required>
                                         <option value="">Pilih Jenis Layanan</option>
-                                        <option value="VPN">VPN</option>
+                                        <option value="Layanan User Akses VPN">Layanan User Akses VPN</option>
                                         <!-- <option value="Akses Jaringan">Akses Jaringan</option> -->
                                         <!-- <option value="Lainnya">Lainnya</option> -->
                                     </select>
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="col-md-12 mb-2">
                                     <label for="">NDA*</label>
-                                    <input type="file" name="nota_dinas" class="form-control" required accept="application/pdf" max-size="2048">
+                                    <input type="file" name="nota_dinas" class="form-control file-upload" required accept="application/pdf" max-size="2048">
                                     </div>
                                 </div>
                             </div>

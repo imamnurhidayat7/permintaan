@@ -266,8 +266,13 @@ class AdminController extends Controller{
     }
 
     public function cariDataSimpeg(Request $request){
+        $store = DB::connection('oracle_db');
+        // $query = $store->update("UPDATE KKPWEB.KONTENAKTIF SET VERSI = '0' WHERE KONTENAKTIFID = '32c8703845994044a51dbd721dda769e' AND TIPE = 'GambarBidang' ");
+        // $query = $store->insert("INSERT INTO KKPWEB.PROFILE (PROFILEID, NAMA, USERUPDATE, LASTUPDATE, VALIDSEJAK, VALIDSAMPAI, ROLENAME) VALUES ('N2908767', 'Kepala Seksi Hubungan Hukum Pertanahan', 'D3D15077B077DD1EE0400B0A9A146B69', '2013-01-22 01:40:53', '2013-01-22 01:40:53', '2013-01-22 01:40:53', 'KepalaSubSeksiHubHukumPertanahan')");
+        
+        // dd('ok');
         if ($request->ajax()) {
-            $store = DB::connection('oracle_db');
+            
             $data_simpeg  = [];
 
             if($request->tipe == '' && $request->keyword ==''){

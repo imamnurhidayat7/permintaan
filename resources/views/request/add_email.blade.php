@@ -17,10 +17,10 @@
                             <label for="">Jenis Layanan*</label>
                             <select name="jenis" id="type" class="form-control" required>
                                 <option value="">Pilih Jenis Layanan</option>
-                                <option value="Pendaftaran Email Baru">Pendaftaran Email Baru</option>
+                                <option value="Layanan Registrasi Email ATR/BPN Individu atau Satker">Layanan Registrasi Email ATR/BPN Individu atau Satker </option>
                                 <!-- <option value="Reset Password Email">Reset Password Email</option> -->
                                 <!-- <option value="Penghapusan Email">Penghapusan Email</option> -->
-                                <option value="Penonaktifan Email">Penonaktifan Email</option>
+                                <option value="Layanan Penonaktifan Email ATR/BPN Individu atau Satker">Layanan Penonaktifan Email ATR/BPN Individu atau Satker</option>
                             </select>
                         </div>
                         <div class="col-md-12 mb-2">
@@ -83,7 +83,7 @@
                 $('#pegawai').hide().find(':input').prop('disabled', true);
                 $('#kedinasan').hide().find(':input').prop('disabled', true);
             }
-            else if(type == 'Pendaftaran Email Baru') {
+            else if(type == 'Layanan Registrasi Email ATR/BPN Individu atau Satker') {
                 var jenis_email = $(this).val();
 
                 if(jenis_email == 'Email Pegawai'){
@@ -95,7 +95,7 @@
                     $('#pegawai').hide().find(':input').prop('disabled', true);
                 }
             }
-            else if(type == 'Penonaktifan Email'){
+            else if(type == 'Layanan Penonaktifan Email ATR/BPN Individu atau Satker'){
                 $('#reset').show().find(':input').prop('disabled', false);
             }
             
@@ -111,7 +111,7 @@
                 $('#pegawai').hide().find(':input').prop('disabled', true);
                 $('#kedinasan').hide().find(':input').prop('disabled', true);
             }
-            else if(type == 'Pendaftaran Email Baru'){
+            else if(type == 'Layanan Registrasi Email ATR/BPN Individu atau Satker'){
                 $('#pendaftaran').show().find(':input').prop('disabled', false);
                 $('#reset').hide().find(':input').prop('disabled', true);
             }

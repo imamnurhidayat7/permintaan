@@ -2,8 +2,8 @@
     <label for="">Jenis Layanan</label>
     <select name="jenis" id="type" disabled class="form-control" required>
         <option value="">Pilih Jenis Layanan</option>
-        <option value="Pendaftaran Email Baru" @if($email->jenis == 'Pendaftaran Email Baru') selected @endif>Pendaftaran Email Baru</option>
-        <option value="Penonaktifan Email" @if($email->jenis == 'Penonaktifan Email') selected @endif>Penonaktifan Email</option>
+        <option value="Pendaftaran Email Baru" @if($email->jenis == 'Layanan Registrasi Email ATR/BPN Individu atau Satker') selected @endif>Layanan Registrasi Email ATR/BPN Individu atau Satker</option>
+        <option value="Penonaktifan Email" @if($email->jenis == 'Layanan Penonaktifan Email ATR/BPN Individu atau Satker') selected @endif>Layanan Penonaktifan Email ATR/BPN Individu atau Satker</option>
     </select>
 </div>
 <div class="col-md-6 mb-2">

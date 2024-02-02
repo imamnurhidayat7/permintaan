@@ -36,7 +36,7 @@
 
         <div class="card-body">
 
-            @foreach($pemberitahuan as $row)
+            @foreach($pemberitahuans as $row)
 
             <div class="item" style="max-height: 230px;">
 
@@ -62,7 +62,7 @@
 
                                 <p class="mb-1" key="t-grammer">{{$row->pesan}}</p>
 
-                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{$row->created_at->format('d-m-Y H:i:s')}}</span></p>
+                                <!-- <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{$row->updated_at->format('d-m-Y H:i:s')}}</span></p> -->
 
                             </div>
 

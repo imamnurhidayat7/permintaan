@@ -4,7 +4,7 @@
         <label for="">Jenis Layanan</label>
         <select name="jenis" id="type" disabled class="form-control" required>
             <option value="">Pilih Jenis Layanan</option>
-            <option value="VPN" @if($akses->jenis == 'VPN') selected @endif>VPN</option>
+            <option value="VPN" @if($akses->jenis == 'Layanan User Akses VPN') selected @endif>Layanan User Akses VPN</option>
             <option value="Akses Jaringan" @if($akses->jenis == 'Akses Jaringan') selected @endif>Akses Jaringan</option>
         </select>
     </div>
@@ -41,6 +41,10 @@
     <div class="col-md-12 mb-2">
         <label for="">IP yang ingin diakses*</label>
         <textarea name="ip_address" disabled cols="30" rows="3" class="form-control">{{$row->ip_address}}</textarea>
+    </div>
+    <div class="col-md-6 mb-4">
+    <label for="">NDA*</label><br/>
+    <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$akses->nda}}"  data-title="NDA" type="button">Lihat File</button><br/>
     </div>
     @endforeach
     @else

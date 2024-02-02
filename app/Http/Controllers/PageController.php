@@ -48,7 +48,7 @@ class PageController extends Controller
     }
 
     public function pemberitahuan(){
-        $data['pemberitahuan'] = Pemberitahuan::where('id_user', Session::get('id'))->orderBy('id', 'desc')->get();
+        $data['pemberitahuans'] = Pemberitahuan::where('id_user', Session::get('id'))->orderBy('id', 'desc')->get();
         return view('pemberitahuan')->with($data);
     }
 

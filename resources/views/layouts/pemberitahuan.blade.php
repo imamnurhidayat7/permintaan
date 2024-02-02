@@ -33,7 +33,7 @@
                             <h6 class="mt-0 mb-1" key="t-your-order">{{$row->judul}}</h6>
                             <div class="font-size-12 text-muted">
                                 <p class="mb-1" key="t-grammer">{{$row->pesan}}</p>
-                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{$row->created_at->format('d-m-Y H:i:s')}}</span></p>
+                                <!-- <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">{{$row->updated_at->format('d-m-Y H:i:s')}}</span></p> -->
                             </div>
                         </div>
                     </div>

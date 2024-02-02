@@ -1144,7 +1144,7 @@ class RequestController extends Controller{
         $kasi = User::find($layanan->id_pic);
 
         if($akses){
-            if($data['jenis'] == 'VPN' || $data['jenis'] == 'Akses Jaringan'){
+            if($data['jenis'] == 'Layanan User Akses VPN' || $data['jenis'] == 'Akses Jaringan'){
                 if($data['kategori'] == 'Pihak Ketiga'){
                     for($i=0; $i<count($data['inner-group']); $i++){
                         DetailRequestAkses::create([
@@ -1270,7 +1270,7 @@ class RequestController extends Controller{
         $insert_email = RequestEmail::create($data);
 
         if($insert_email){
-            if($data['jenis'] == 'Pendaftaran Email Baru'){
+            if($data['jenis'] == 'Layanan Registrasi Email ATR/BPN Individu atau Satker'){
                 if($data['jenis_email'] == 'Email Pegawai'){
                     $nip = explode(',', $data['nip']);
                     $count1 = 0;
