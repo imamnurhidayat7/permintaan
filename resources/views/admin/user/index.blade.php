@@ -164,10 +164,6 @@
             }
         });
 
-        var table = $('#datatable2').DataTable({
-            "order": [[ 0, "desc" ]],
-        });
-
         $('.btnEdit').on('click', function(){
             //alert('a');
             var id = $(this).data('id');
@@ -184,6 +180,12 @@
 
             $('#modalEdit').modal('show');
         });
+
+        var table = $('#datatable2').DataTable({
+            "order": [[ 0, "desc" ]],
+        });
+
+        
 
     </script>
     @endsection
