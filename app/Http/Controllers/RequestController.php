@@ -134,7 +134,7 @@ class RequestController extends Controller{
     }
 
     public function requestDetail($id){
-        $data['request'] = Req::with('user')->with('layanan.fields.meta', 'meta', 'layanan.pelaksana', 'layanan.pic')->where('id', $id)->first();
+        $data['request'] = Req::with('user')->with('layanan.fields.meta', 'meta', 'layanan.pelaksana', 'layanan.pic', 'layanan.approver')->where('id', $id)->first();
         $data['catatan'] = Catatan::with('pengirim')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['disposisi'] = Disposisi::with('pengirim')->with('penerima')->where('id_request', $id)->orderBy('created_at', 'desc')->get();
         $data['user'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('id_bidang', $data['request']->layanan->id_bidang)->where('id', '!=', Session::get('id'))->get();
@@ -1068,7 +1068,9 @@ class RequestController extends Controller{
 
     public function tambahAkses(Request $request){
         $data = $request['outer-group'][0];
-
+        if($data['akses_db']){
+            $data['akses_db'] = 1;
+        }
         if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
             if($data['pegawai'] == 'ASN'){
                 $nip = $data['nip'];
@@ -1085,6 +1087,10 @@ class RequestController extends Controller{
                             Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
                             return redirect()->back();
                         }
+                    }
+                    else{
+                        Alert::error('NIP yang dimasukkan belum memiliki email, Silahkan lakukan permintaan email terlebih dahulu!');
+                        return redirect()->back();
                     }
     
                     if($check_email->satkerid != null){
@@ -1152,7 +1158,7 @@ class RequestController extends Controller{
                             'peralatan'=>$data['inner-group'][$i]['peralatan'],
                             'ip_address'=>$data['inner-group'][$i]['ip_address'],
                             'mac_address'=>$data['inner-group'][$i]['mac_address'],
-                            'id_request_akses'=>$akses->id
+                            'id_request_akses'=>$akses->id,
                         ]);
                     }
                 }
