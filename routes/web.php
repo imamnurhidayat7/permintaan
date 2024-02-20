@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\KursController;
 use Vizir\KeycloakWebGuard\Controllers\AuthController as Keycloak;
 
 /*
@@ -34,6 +35,9 @@ Route::get('layanan/{id}', [DataController::class, 'showDetailLayanan']);
 Route::get('template', function () {
     return view('template.form_akses_internal', ['name' => 'James']);
 });
+
+// Route::get('wa-blast', [AdminController::class, 'sendWABlast'])->middleware('checkRole:admin');
+Route::get('cekKurs', [KursController::class, 'showKurs']);
 
 
 Route::group(['middleware' => 'checkKeycloak'], function () {
@@ -135,6 +139,8 @@ Route::group(['middleware' => 'checkKeycloak'], function () {
     //pejabat
     Route::get('pejabat/dashboard', [PageController::class, 'dashboard_pejabat'])->middleware('checkRole:pejabat');
 }); Route::get('pejabat/request', [RequestController::class, 'showRequestList'])->middleware('checkRole:pejabat');
+
+
 
 
 

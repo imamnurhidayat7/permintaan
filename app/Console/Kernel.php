@@ -15,12 +15,17 @@ class Kernel extends ConsoleKernel
      */
 
     protected $commands = [
+        Commands\updateKurs::class,
         Commands\tutupRequest::class,
+        \App\Console\Commands\ClearQueue::class,
+        \App\Console\Commands\ShowPendingQueue::class,
     ];
 
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('tutup-request')->daily();
+        $schedule->command('update-kurs')->daily();
+
     }
 
     /**
