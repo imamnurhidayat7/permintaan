@@ -41,7 +41,7 @@ class updateKurs extends Command
     public function handle()
     {
 
-        $// URL dari halaman web yang ingin di-crawl
+        // URL dari halaman web yang ingin di-crawl
         $url = 'https://www.bi.go.id/id/statistik/informasi-kurs/transaksi-bi/default.aspx';
 
         // Inisialisasi array untuk menyimpan data kurs
