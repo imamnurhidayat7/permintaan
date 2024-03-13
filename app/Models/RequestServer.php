@@ -21,7 +21,8 @@ class RequestServer extends Model
         'jabatan',
         'pemrograman',
         'dampak',
-        'nota_dinas'
+        'nota_dinas',
+        'no_hp'
 
     ];
 

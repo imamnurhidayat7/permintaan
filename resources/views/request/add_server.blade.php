@@ -34,6 +34,10 @@
                             <label for="">Kebutuhan Permintaan*</label>
                             <textarea name="kebutuhan" id="" cols="30" rows="3"class="form-control" required></textarea>
                         </div>
+                        <div class="col-md-12 mb-2">
+                            <label for="">No HP*</label>
+                            <input type="text" name="no_hp" id="no_hp" required class="form-control">
+                        </div>
                         <hr class="mt-2">
                         <p>INFORMASI DEVELOPER</p>
                         <hr>
