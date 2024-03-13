@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('tutup-request')->daily();
-        $schedule->command('update-kurs')->daily();
+        $schedule->command('update-kurs')->dailyAt('08:00');
 
     }
 

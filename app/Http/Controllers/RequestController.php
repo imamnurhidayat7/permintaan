@@ -1068,9 +1068,9 @@ class RequestController extends Controller{
 
     public function tambahAkses(Request $request){
         $data = $request['outer-group'][0];
-        if($data['akses_db']){
-            $data['akses_db'] = 1;
-        }
+        // if($data['akses_db']){
+        //     $data['akses_db'] = 1;
+        // }
         if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
             if($data['pegawai'] == 'ASN'){
                 $nip = $data['nip'];

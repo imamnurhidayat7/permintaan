@@ -78,6 +78,7 @@ class updateKurs extends Command
                 $nilaiBeli = $kolom->item(1)->nodeValue;
                 $nilaiJual = $kolom->item(2)->nodeValue;
 
+
                 // Memeriksa apakah nilai jual mengandung koma
                 $nilaiJual = str_replace(".", "", $nilaiJual);
                 if (strpos($nilaiJual, ',') !== false) {
@@ -88,6 +89,7 @@ class updateKurs extends Command
                     $nilaiJual = ($angkaBelakang >= 50) ? $angkaDepan + 1 : $angkaDepan;
                 }
                 $tanggal = date('Y-m-d H:i:s', time());
+                //\Log::info($mataUang.' : '.$nilaiJual );
                 $db = DB::connection('oracle_db');
                 $insert = $db->insert('INSERT INTO KKPWEB.KURSMATAUANG (TIPEMATAUANGID, KURSRUPIAH, TANGGAL, USERUPDATE, TANGGALPERUBAHAN) VALUES (?, ?, ?, ?, ?)', [$mataUang, $nilaiJual, $tanggal, 'pusdatin', $tanggal]);
 
