@@ -9,6 +9,7 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\KursController;
+use App\Http\Controllers\ZoomController;
 use Vizir\KeycloakWebGuard\Controllers\AuthController as Keycloak;
 
 /*
@@ -38,9 +39,18 @@ Route::get('template', function () {
 
 // Route::get('wa-blast', [AdminController::class, 'sendWABlast'])->middleware('checkRole:admin');
 Route::get('cekKurs', [KursController::class, 'showKurs']);
+Route::post('cekBPJS', [KursController::class, 'cekBPJS']);
+Route::post('cekBPJSNoka', [KursController::class, 'cekBPJSNoka']);
+Route::get('encrypt', [KursController::class, 'encrypt']);
+
+//zoom
 
 
 Route::group(['middleware' => 'checkKeycloak'], function () {
+
+    Route::get('pusdatin-menyapa', [ZoomController::class, 'index']);
+    Route::post('tambah-absen', [ZoomController::class, 'absen']);
+
     Route::get('/error', [PageController::class, 'error']);
     Route::get('/profil', [PageController::class, 'profil']);
     Route::get('/pemberitahuan', [PageController::class, 'pemberitahuan']);
