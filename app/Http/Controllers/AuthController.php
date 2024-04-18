@@ -131,6 +131,12 @@ class AuthController extends Controller
         Session::put('kantor', $user->kantor);
         Session::put('isUserPusat', $data['isUserPusat']);
 
+        $intendedUrl = Session::get('previous');
+        //dd($intendedUrl);
+        if($intendedUrl == 'pusdatin-menyapa'){
+            return redirect('pusdatin-menyapa');
+        }
+
         if($user->role == 'admin'){
             Session::put('jabatan', 'Admin');
             return redirect('admin/dashboard');
