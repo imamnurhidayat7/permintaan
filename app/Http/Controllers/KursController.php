@@ -87,6 +87,9 @@ class KursController extends Controller
                 }
                 $tanggal = date('Y-m-d H:i:s', time());
                 $db = DB::connection('oracle_db');
+                if($data['mata_uang'] == 'JPY'){
+                    $data['nilai_jual'] = $data['nilai_beli'];
+                }
                 $insert = $db->insert('INSERT INTO KKPWEB.KURSMATAUANG (TIPEMATAUANGID, KURSRUPIAH, TANGGAL, USERUPDATE, TANGGALPERUBAHAN) VALUES (?, ?, ?, ?, ?)', [$data['mata_uang'], $data['nilai_jual'], $tanggal, 'pusdatin', $tanggal]);
                 //echo "Mata Uang: " . $data['mata_uang'] . ", Nilai Beli: " . $data['nilai_beli'] . ", Nilai Jual: " . $data['nilai_jual'] . "<br>";
             }
