@@ -42,6 +42,9 @@ Route::get('cekKurs', [KursController::class, 'showKurs']);
 Route::post('cekBPJS', [KursController::class, 'cekBPJS']);
 Route::post('cekBPJSNoka', [KursController::class, 'cekBPJSNoka']);
 Route::get('encrypt', [KursController::class, 'encrypt']);
+Route::get('ratingIntan', [KursController::class, 'ratingIntan']);
+Route::get('ratingHTEL', [KursController::class, 'ratingHTEL']);
+Route::post('submit-rating', [KursController::class, 'setRating']);
 
 //zoom
 

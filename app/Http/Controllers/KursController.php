@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DOMDocument;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Http;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
+
 
 class KursController extends Controller
 {
@@ -89,4 +94,257 @@ class KursController extends Controller
 
         echo "OK";
     }
+
+    public function cekBPJS(Request $request){
+        // $nik = $request->nik;
+        if(!$request->nik || !$request->berkasid){
+            $output = [
+                'success' => false,
+                'message' => 'Masih ada data yang belum lengkap! Silahkan hubungi administrator!',
+            ];
+            return response()->json($output);
+        }
+        $data['nik'] = $request->nik;
+        $data['berkasid'] = $request->berkasid;
+
+        $data['timestamp'] = time();
+        $data['consid'] = '1129';
+        $data['secretkey'] = '3vT38A9098';
+        $data['user_key'] = 'b08dd7b672910e09f9ccdce7ee1933a4';
+        // Menghitung signature menggunakan HMAC-SHA256
+        $data['signature'] = hash_hmac('sha256', $data['consid'] . '&' . $data['timestamp'], $data['secretkey'], true);
+
+        // Mengonversi signature ke dalam format Base64
+        $data['signature'] = base64_encode($data['signature']);
+        $output = false;
+        $status = '';
+        $pesan = '';
+        
+        try{
+            $response = Http::withHeaders([
+                'x-cons-id' => $data['consid'],
+                'x-timestamp' => $data['timestamp'],
+                'x-signature' => $data['signature'],
+                'user_key' => $data['user_key']
+            ])->get('https://apijkn-dev.bpjs-kesehatan.go.id/infopeserta_dev/api/nik/'.$data['nik']);
+
+            // Mendekodekan respons JSON menjadi array asosiatif
+            $responseData = json_decode($response->body(), true);
+
+            // Mendapatkan nilai variabel 'response' dari array respons
+            $responseValue = $responseData['response'];
+            
+            if($responseValue != null){
+                    $encrypt_method = 'AES-256-CBC';
+                    $decrypt_key = $data['consid'].$data['secretkey'].$data['timestamp'];; // Isi dengan kunci Anda
+
+                    
+                    $data['key'] = hash('sha256', $decrypt_key, true);
+                    $data['iv'] = substr(hash('sha256', $decrypt_key, true), 0, 16);
+
+                    $decryptedData = openssl_decrypt(base64_decode($responseValue), $encrypt_method, $data['key'], OPENSSL_RAW_DATA, $data['iv']);
+                    if ($decryptedData === false) {
+                        // Penanganan kesalahan dekripsi
+                        $error = openssl_error_string(); // Mendapatkan pesan kesalahan OpenSSL
+                    } else {
+                        $hasil = json_decode(\LZCompressor\LZString::decompressFromEncodedURIComponent($decryptedData));
+                        $status = 'T';
+                        $pesan =  $hasil->ketstatuspeserta;
+
+                        $output = [
+                            'success' => true,
+                            'message' => 'berhasil',
+                            'status' => $pesan
+                        ];
+                    }
+            }
+            else{
+                $status = "F";
+                $pesan =  'Data Tidak Ditemukan';
+                $output = [
+                    'success' => false,
+                    'message' => $pesan,
+                ];
+            }
+
+
+        }
+        catch(\Exception $e){
+            $status = "F";
+            $pesan =  'Terjadi Kesalahan pada Service BPJS';
+            $output = [
+                'success' => false,
+                'message' => $pesan,
+            ];
+        }
+
+        $tanggal = date('Y-m-d H:i:s', time());
+        $db = DB::connection('oracle_db');
+        $getid = $db->select("SELECT sys_guid() as guid FROM DUAL");
+        $guid = $getid[0]->guid;
+        //var_dump(bin2hex($guid));
+        $insert = $db->insert("INSERT INTO BPJSSERVICELOG (BPJSSERVICELOGID, NIK, STATUS, TANGGAL, PESAN, BERKASID) VALUES (?, ?, ?, ?, ?, ?)", [bin2hex($guid), $data['nik'], $status, $tanggal, $pesan, $data['berkasid']]);
+
+        return response()->json($output);
+        
+    }
+
+    public function cekBPJSNoka(Request $request){
+        // $nik = $request->nik;
+        if(!$request->noka || !$request->berkasid){
+            $output = [
+                'success' => false,
+                'message' => 'Masih ada data yang belum lengkap! Silahkan hubungi administrator!',
+            ];
+            return response()->json($output);
+        }
+        $data['noka'] = $request->noka;
+        $data['berkasid'] = $request->berkasid;
+
+        $data['timestamp'] = time();
+        $data['consid'] = '1129';
+        $data['secretkey'] = '3vT38A9098';
+        $data['user_key'] = 'b08dd7b672910e09f9ccdce7ee1933a4';
+        // Menghitung signature menggunakan HMAC-SHA256
+        $data['signature'] = hash_hmac('sha256', $data['consid'] . '&' . $data['timestamp'], $data['secretkey'], true);
+
+        // Mengonversi signature ke dalam format Base64
+        $data['signature'] = base64_encode($data['signature']);
+        $output = false;
+        $status = '';
+        $pesan = '';
+        
+        try{
+            $response = Http::withHeaders([
+                'x-cons-id' => $data['consid'],
+                'x-timestamp' => $data['timestamp'],
+                'x-signature' => $data['signature'],
+                'user_key' => $data['user_key']
+            ])->get('https://apijkn-dev.bpjs-kesehatan.go.id/infopeserta_dev/api/noka/'.$data['noka']);
+
+            // Mendekodekan respons JSON menjadi array asosiatif
+            $responseData = json_decode($response->body(), true);
+
+            // Mendapatkan nilai variabel 'response' dari array respons
+            $responseValue = $responseData['response'];
+            
+            if($responseValue != null){
+                    $encrypt_method = 'AES-256-CBC';
+                    $decrypt_key = $data['consid'].$data['secretkey'].$data['timestamp'];; // Isi dengan kunci Anda
+
+                    
+                    $data['key'] = hash('sha256', $decrypt_key, true);
+                    $data['iv'] = substr(hash('sha256', $decrypt_key, true), 0, 16);
+
+                    $decryptedData = openssl_decrypt(base64_decode($responseValue), $encrypt_method, $data['key'], OPENSSL_RAW_DATA, $data['iv']);
+                    if ($decryptedData === false) {
+                        // Penanganan kesalahan dekripsi
+                        $error = openssl_error_string(); // Mendapatkan pesan kesalahan OpenSSL
+                    } else {
+                        $hasil = json_decode(\LZCompressor\LZString::decompressFromEncodedURIComponent($decryptedData));
+                        $status = 'T';
+                        $pesan =  $hasil->ketstatuspeserta;
+
+                        $output = [
+                            'success' => true,
+                            'message' => 'berhasil',
+                            'status' => $pesan
+                        ];
+                    }
+            }
+            else{
+                $status = "F";
+                $pesan =  'Data Tidak Ditemukan';
+                $output = [
+                    'success' => false,
+                    'message' => $pesan,
+                ];
+            }
+
+
+        }
+        catch(\Exception $e){
+            $status = "F";
+            $pesan =  'Terjadi Kesalahan pada Service BPJS';
+            $output = [
+                'success' => false,
+                'message' => $pesan,
+            ];
+        }
+
+        $tanggal = date('Y-m-d H:i:s', time());
+        $db = DB::connection('oracle_db');
+        $getid = $db->select("SELECT sys_guid() as guid FROM DUAL");
+        $guid = $getid[0]->guid;
+        //var_dump(bin2hex($guid));
+        $insert = $db->insert("INSERT INTO BPJSSERVICELOG (BPJSSERVICELOGID, NIK, STATUS, TANGGAL, PESAN, BERKASID) VALUES (?, ?, ?, ?, ?, ?)", [bin2hex($guid), $data['noka'], $status, $tanggal, $pesan, $data['berkasid']]);
+
+        return response()->json($output);
+        
+    }
+
+    function encrypt() {
+        $key = utf8_encode('4456445677897789'); // assuming AppConfig::shared() is a function to get shared instance
+        $iv = utf8_encode('1234567812345678'); // assuming AppConfig::shared() is a function to get shared instance
+    
+        // Pad the key if it's less than 16 bytes (128 bits)
+        if (strlen($key) < 16) {
+            $key = str_pad($key, 16, "\0");
+        }
+    
+        // Pad the IV if it's less than 16 bytes (128 bits)
+        if (strlen($iv) < 16) {
+            $iv = str_pad($iv, 16, "\0");
+        }
+    
+        $encryptedData = openssl_encrypt('93975C008CD1EA62E040A8C010017FFF', 'aes-128-cbc', $key, OPENSSL_RAW_DATA, $iv);
+    
+        if ($encryptedData === false) {
+            // Handle error
+            return null;
+        }
+    
+        // Encode the encrypted data using base64
+        $result = base64_encode($encryptedData);
+
+        dd($result);
+    
+        return $result;
+    }
+
+    public function ratingIntan(){
+        $data['appid'] = 'F5A9B9E681670858E053051D0B0AA2D4';
+        $data['rating'] = $this->getRating($data['appid']);
+        //dd($data);
+        return view('layouts.rating')->with($data);
+    }
+
+    public function ratingHTEL(){
+        $data['appid'] = 'F5A9B9E681670858E053051D0B0AA2D3';
+        $data['rating'] = $this->getRating($data['appid']);
+        //dd($data);
+        return view('layouts.rating')->with($data);
+    }
+
+    public function setRating(Request $request){
+        $db = DB::connection('oracle_db');
+        $data = $request->all();
+        $getid = $db->select("SELECT sys_guid() as guid FROM DUAL");
+        $guid = $getid[0]->guid;
+        $tanggal = date('Y-m-d H:i:s', time());
+        //var_dump(bin2hex($guid));
+        $insert = $db->insert("INSERT INTO KKPWEB.TBLAPPRATING (APPRATINGID, APPID, USERID, RATING, UPDTIME, UPDUSER, STATUS) VALUES (?, ?, ?, ?, ?, ?, ?)", [bin2hex($guid), $data['appid'], 'null', $data['rating'], $tanggal, 'null', 'A' ]);
+
+        $rating = $this->getRating($data['appid']);
+        return $rating;
+
+    }
+
+    public function getRating($appid){
+        $db = DB::connection('oracle_db');
+        $query = $db->selectOne("SELECT AVG(RATING) as rating, count(RATING) as jumlah FROM KKPWEB.TBLAPPRATING WHERE APPID = '$appid' ");
+
+        return $query;
+    } 
+    
 }
