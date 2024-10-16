@@ -318,6 +318,7 @@ class KursController extends Controller
     public function ratingIntan(){
         $data['appid'] = 'F5A9B9E681670858E053051D0B0AA2D4';
         $data['rating'] = $this->getRating($data['appid']);
+        $data['nama'] = 'Layanan Informasi Elektronik';
         //dd($data);
         return view('layouts.rating')->with($data);
     }
@@ -325,6 +326,7 @@ class KursController extends Controller
     public function ratingHTEL(){
         $data['appid'] = 'F5A9B9E681670858E053051D0B0AA2D3';
         $data['rating'] = $this->getRating($data['appid']);
+        $data['nama'] = 'Hak Tanggungan Elektronik';
         //dd($data);
         return view('layouts.rating')->with($data);
     }

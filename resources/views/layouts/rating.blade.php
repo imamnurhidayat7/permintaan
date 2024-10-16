@@ -57,7 +57,7 @@
 <body>
     <div class="rating-box">
         <h2>Rating</h2>
-        <p>Berikan Rating ke Website Layanan Informasi ATR/BPN</p>
+        <p>Berikan Rating ke Website {{$nama}} ATR/BPN</p>
         <div class="stars">
             <i class="fa fa-star" data-value="1"></i>
             <i class="fa fa-star" data-value="2"></i>
