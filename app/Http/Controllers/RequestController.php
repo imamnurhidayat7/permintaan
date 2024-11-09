@@ -230,8 +230,8 @@ class RequestController extends Controller{
             $insert_req = Req::create([
                 'layanan_id' => $data['id'],
                 'user_id' => Session::get('id'),
-                'status' => 'Request Diajukan',
-                'tahapan' => 'Menunggu Pengecekan Berkas',
+                'status' => 'Sedang Diproses',
+                'tahapan' => 'Sedang Diproses',
                 'no_req' => $no_req,
                 'jenis' => $data['jenis'],
                 'id_user_disposisi' => $layanan->id_pelaksana
@@ -523,7 +523,12 @@ class RequestController extends Controller{
                 $data['tahapan'] = 'Menunggu Pengecekan Berkas';
                 $data['status'] = 'Request Diajukan';
             }
-
+            
+            if($data['jenis'] == 'Layanan Permintaan Akun Database'){
+                $data['tahapan'] = 'Sedang Diproses';
+                $data['status'] = 'Sedang Diproses';
+            }
+            
             $update->fill($data);
             $update->save();
 
@@ -859,10 +864,11 @@ class RequestController extends Controller{
                 $data['tahapan'] = 'Ditugaskan ke Pelaksana';
             }
 
-            if($req->layanan_id == '27' || $req->layanan_id == '29'){
+            if($req->layanan_id == '27' || $req->layanan_id == '29' || $req->layanan_id == '25'){
                 $data['status'] = 'Sedang Diproses';
                 $data['tahapan'] = 'Ditugaskan ke Pelaksana';
             }
+
 
             $pesan = 'Request #'.$req->no_req.' dibuka kembali';
             $judul = 'Pesan Baru';
@@ -1067,10 +1073,14 @@ class RequestController extends Controller{
     }
 
     public function tambahAkses(Request $request){
+
+
         $data = $request['outer-group'][0];
         // if($data['akses_db']){
         //     $data['akses_db'] = 1;
         // }
+
+        //dd($data);
         if($data['kategori'] == 'Internal' && $data['jenis'] != 'Lainnya'){
             if($data['pegawai'] == 'ASN'){
                 $nip = $data['nip'];
@@ -1127,15 +1137,27 @@ class RequestController extends Controller{
             }
         }
 
+
+        if($data['jenis'] == 'Layanan Permintaan Akun Database'){
+            $pelaksana = $layanan->id_pelaksana_db;
+            $status = 'Sedang Diproses';
+            $tahapan= 'Sedang Diproses'; 
+        }
+        else{
+            $pelaksana = $layanan->id_pelaksana; 
+            $status = 'Request Diajukan';
+            $tahapan= 'Menunggu Pengecekan Berkas'; 
+        }
+
         $insert_req = Req::create([
             'layanan_id' => $data['id'],
             'user_id' => Session::get('id'),
-            'status' => 'Request Diajukan',
-            'tahapan' => 'Menunggu Pengecekan Berkas',
+            'status' => $status,
+            'tahapan' => $tahapan,
             'no_req' => $no_req,
             'jenis' => $data['jenis'],
             'kantor' => Session::get('kantor'),
-            'id_user_disposisi' => $layanan->id_pelaksana
+            'id_user_disposisi' => $pelaksana
         ]);
 
         if(!$insert_req){
@@ -1150,14 +1172,14 @@ class RequestController extends Controller{
         $kasi = User::find($layanan->id_pic);
 
         if($akses){
-            if($data['jenis'] == 'Layanan User Akses VPN' || $data['jenis'] == 'Akses Jaringan'){
+            if($data['jenis'] == 'Layanan User Akses VPN' || $data['jenis'] == 'Layanan Permintaan Akun Database'){
                 if($data['kategori'] == 'Pihak Ketiga'){
                     for($i=0; $i<count($data['inner-group']); $i++){
                         DetailRequestAkses::create([
                             'nama' => $data['inner-group'][$i]['nama'],
                             'peralatan'=>$data['inner-group'][$i]['peralatan'],
-                            'ip_address'=>$data['inner-group'][$i]['ip_address'],
-                            'mac_address'=>$data['inner-group'][$i]['mac_address'],
+                            'ip_address'=>$data['inner-group'][$i]['ip_address'] ?? null,
+                            'mac_address'=>$data['inner-group'][$i]['mac_address'] ?? null,
                             'id_request_akses'=>$akses->id,
                         ]);
                     }
@@ -1169,7 +1191,7 @@ class RequestController extends Controller{
                         'nip' => $data['nip'],
                         'satker' => $data['satker'],
                         'peralatan'=>$data['peralatan'],
-                        'ip_address'=>$data['ip_address'],
+                        'ip_address'=>$data['ip_address'] ?? null,
                         'mac_address'=>$data['mac_address'],
                         'id_request_akses'=>$akses->id
                     ]);

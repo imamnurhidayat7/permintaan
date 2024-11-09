@@ -21,6 +21,7 @@
                                     <select name="jenis" id="type" class="form-control" required>
                                         <option value="">Pilih Jenis Layanan</option>
                                         <option value="Layanan User Akses VPN">Layanan User Akses VPN</option>
+                                        <option value="Layanan Permintaan Akun Database">Layanan Permintaan Akun Database</option>
                                         <!-- <option value="Akses Jaringan">Akses Jaringan</option> -->
                                         <!-- <option value="Lainnya">Lainnya</option> -->
                                     </select>
@@ -114,6 +115,63 @@
                                     <label for="">Attachment</label>
                                     <input type="file" name="nda" class="file-upload form-control" accept="application/pdf" max-size="2048">
                                 </div>
+                                <div class="form-check mt-4 mb-2">
+                                <input class="form-check-input" name="akses_db" type="checkbox" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Akses Database
+                                </label>
+                                </div>
+                            </div>
+                            <div id="internal2">
+                                <div class="col-md-12 mb-2">
+                                    <label for="">Tipe Pegawai</label>
+                                    <select name="pegawai" id="tipe_pegawai2" class="form-control" required>
+                                        <option value="">Pilih Tipe Pegawai</option>
+                                        <option value="ASN">ASN</option>
+                                        <option value="NON ASN">NON ASN</option>
+                                    </select>
+                                </div>
+                                <div class="asn2">
+                                    <div class="col-md-12 mb-2">
+                                        <label for="">NIP*</label>
+                                        <input type="text" name="nip" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="nonasn2 row">
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Nama*</label>
+                                        <input type="text" name="nama" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <label for="">Email*</label>
+                                        <input type="text" name="email" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <label for="">Satuan Kerja*</label>
+                                        <input type="text" name="satker" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-2">
+                                    <label for="">Peralatan yang digunakan*</label>
+                                    <input type="text" name="peralatan" class="form-control" required>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label for="">Mac Address*</label>
+                                    <input type="text" name="mac_address" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="">Surat Permohonan</label>
+                                    <input type="file" name="nda" class="file-upload form-control" accept="application/pdf" max-size="2048">
+                                </div>
+                                </div>
+                                
+                                <!-- <div class="form-check mt-4 mb-2">
+                                <input class="form-check-input" name="akses_db" type="checkbox" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Akses Database
+                                </label>
+                                </div> -->
                             </div>
                             <div id="pihak3">
                             <hr>
@@ -145,6 +203,13 @@
                             <input type="file" name="surat_tugas" class="file-upload form-control" required accept="application/pdf" max-size="2048">
                             </div>
                             </div>
+
+                            <!-- <div class="form-check mb-2">
+                            <input class="form-check-input" name="akses_db" type="checkbox" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Akses Database
+                            </label>
+                            </div> -->
                             <hr>
                             <!-- aa -->
                             <h5 class="text-center">DATA PERSONEL</h5>
@@ -181,8 +246,11 @@
                                             <hr>
                                 </div>
                             </div>
+
+                            
                         </div>
                         </div>
+                        
                         <button type="submit" class="submit btn btn-md btn-primary mt-4">Submit</button>
                     </form>
                 </div>
@@ -196,11 +264,14 @@
     <script src="{{asset('js/form-repeater.int.js')}}"></script>
     <script>
         $('#internal').hide();
+        $('#internal2').hide();
         $('#pihak3').hide();
         $('#lainnya_internal').hide();
         $('#lainnya_pihak3').hide();
         $('.asn').hide();
         $('.nonasn').hide();
+        $('.asn2').hide();
+        $('.nonasn2').hide();
         // set default dates
         var start = new Date();
         // set end date to max one year period:
@@ -250,21 +321,48 @@
         $('#type').on('change', function(){
             $('#kategori').val('');
             $('#internal').hide().find(':input').prop('disabled', true);
+            $('#internal2').hide().find(':input').prop('disabled', true);
             $('#pihak3').hide().find(':input').prop('disabled', true);
             $('#lainnya_internal').hide().find(':input').prop('disabled', true);
             $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+
         });
 
         $('#kategori').on('change', function(){
             var jenis = $('#type').val();
+            var type = $(this).val();
 
             if(jenis === ''){
                 alert('Pilih Jenis Layanan terlebih dahulu');
                 $(this).val('');
                 $('#internal').hide().find(':input').prop('disabled', true);
+                $('#internal2').hide().find(':input').prop('disabled', true);
                 $('#pihak3').hide().find(':input').prop('disabled', true);
                 $('#lainnya_internal').hide().find(':input').prop('disabled', true);
                 $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+            }
+            else if(jenis === 'Layanan Permintaan Akun Database'){
+                if(type == ''){
+                    $('#internal').hide().find(':input').prop('disabled', true);
+                    $('#internal2').hide().find(':input').prop('disabled', true);
+                    $('#pihak3').hide().find(':input').prop('disabled', true);
+                    $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                    $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                }
+                else if(type == 'Internal'){
+                    $('#internal').hide().find(':input').prop('disabled', true);
+                    $('#internal2').show().find(':input').prop('disabled', false);
+                    $('#pihak3').hide().find(':input').prop('disabled', true);
+                    $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                    $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                }
+                else{
+                    $('#internal2').hide().find(':input').prop('disabled', true);
+                    $('#internal2').hide().find(':input').prop('disabled', true);
+                    $('#pihak3').show().find(':input').prop('disabled', false);
+                    $('#lainnya_internal').hide().find(':input').prop('disabled', true);
+                    $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
+                }
             }
             else{
                 //alert('a');
@@ -273,13 +371,14 @@
                 if(jenis == 'Lainnya'){
 
                     if(type == ''){
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
                         $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
                     }
                     else if (type == 'Internal'){
-                        
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').show().find(':input').prop('disabled', false);
@@ -289,6 +388,7 @@
                         
                     }
                     else if (type == 'Pihak Ketiga'){
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
@@ -298,6 +398,7 @@
                 }
                 else{
                     if(type == ''){
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
@@ -305,12 +406,14 @@
                     }
                     else if(type == 'Internal'){
                         //alert('a');
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').show().find(':input').prop('disabled', false);
                         $('#pihak3').hide().find(':input').prop('disabled', true);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
                         $('#lainnya_pihak3').hide().find(':input').prop('disabled', true);
                     }
                     else{
+                        $('#internal2').hide().find(':input').prop('disabled', true);
                         $('#internal').hide().find(':input').prop('disabled', true);
                         $('#pihak3').show().find(':input').prop('disabled', false);
                         $('#lainnya_internal').hide().find(':input').prop('disabled', true);
@@ -329,6 +432,17 @@
             else{
                 $('.asn').hide().find(':input').prop('disabled', true);
                 $('.nonasn').show().find(':input').prop('disabled', false);
+            }
+        });
+
+        $('#tipe_pegawai2').on('change', function(){
+            if($(this).val() == 'ASN'){
+                $('.asn2').show().find(':input').prop('disabled', false);
+                $('.nonasn2').hide().find(':input').prop('disabled', true);
+            }
+            else{
+                $('.asn2').hide().find(':input').prop('disabled', true);
+                $('.nonasn2').show().find(':input').prop('disabled', false);
             }
         });
 

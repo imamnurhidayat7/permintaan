@@ -346,7 +346,7 @@
                                             <option value="Sedang Diproses" @if($request->status == 'Sedang Diproses') selected @endif>Sedang Diproses</option>  
                                             <option value="Ditunda" @if($request->status == 'Ditunda') selected @endif>Ditunda</option>
                                             <option value="Selesai" @if($request->status == 'Selesai') selected @endif>Selesai</option>
-                                            @if($request->layanan->id == 27)
+                                            @if($request->layanan->id == 27 || $request->layanan->id == 25)
                                             <option value="Ditolak" @if($request->status == 'Ditolak') selected @endif>Ditolak</option>
                                             @endif
                                             @endif

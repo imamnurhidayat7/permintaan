@@ -5,7 +5,7 @@
         <select name="jenis" id="type" disabled class="form-control" required>
             <option value="">Pilih Jenis Layanan</option>
             <option value="VPN" @if($akses->jenis == 'Layanan User Akses VPN') selected @endif>Layanan User Akses VPN</option>
-            <option value="Akses Jaringan" @if($akses->jenis == 'Akses Jaringan') selected @endif>Akses Jaringan</option>
+            <option value="Akses Jaringan" @if($akses->jenis == 'Layanan Permintaan Akun Database') selected @endif>Layanan Permintaan Akun Database</option>
         </select>
     </div>
     <div class="col-md-6 mb-2">
@@ -16,6 +16,7 @@
             <option value="Pihak Ketiga" @if($akses->kategori == 'Pihak Ketiga') selected @endif>Pihak Ketiga</option>
         </select>
     </div>
+    
     @if($akses->kategori == 'Internal')
     @foreach($akses->userAkses as $row)
     <div class="col-md-6 mb-2">
@@ -38,12 +39,14 @@
         <label for="">Mac Address*</label>
         <input type="text" name="mac_address" value="{{$row->mac_address}}" disabled class="form-control" required>
     </div>
+    @if($row->ip_address)
     <div class="col-md-12 mb-2">
         <label for="">IP yang ingin diakses*</label>
         <textarea name="ip_address" disabled cols="30" rows="3" class="form-control">{{$row->ip_address}}</textarea>
     </div>
-    <div class="col-md-6 mb-4">
-    <label for="">NDA*</label><br/>
+    @endif
+    <div class="col-md-6 mb-2">
+    <label for="">File Attachment</label><br/>
     <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$akses->nda}}"  data-title="NDA" type="button">Lihat File</button><br/>
     </div>
     @endforeach
@@ -105,4 +108,6 @@
     </tbody>
 </table>
 @endif
+
+
 </div>

@@ -3,15 +3,15 @@
 <input type="hidden" name="id" value="{{$akses->id}}">
     <div class="col-md-6 mb-2">
         <label for="">Jenis Layanan</label>
-        <select name="jenis" id="type" disabled class="form-control" required>
+        <select name="jenis" id="type" readonly class="form-control" required>
             <option value="">Pilih Jenis Layanan</option>
-            <option value="VPN" @if($akses->jenis == 'VPN') selected @endif>VPN</option>
-            <option value="Akses Jaringan" @if($akses->jenis == 'Akses Jaringan') selected @endif>Akses Jaringan</option>
+            <option value="Layanan User Akses VPN" @if($akses->jenis == 'Layanan User Akses VPN') selected @endif>Layanan User Akses VPN</option>
+            <option value="Layanan Permintaan Akun Database" @if($akses->jenis == 'Layanan Permintaan Akun Database') selected @endif>Layanan Permintaan Akun Database</option>
         </select>
     </div>
     <div class="col-md-6 mb-2">
         <label for="">Kategori</label>
-        <select name="kategori" id="kategori" disabled class="form-control" required>
+        <select name="kategori" id="kategori" readonly class="form-control" required>
             <option value="">Pilih Kategori</option>
             <option value="Internal" @if($akses->kategori == 'Internal') selected @endif>Internal</option>
             <option value="Pihak Ketiga" @if($akses->kategori == 'Pihak Ketiga') selected @endif>Pihak Ketiga</option>
@@ -39,10 +39,22 @@
         <label for="">Mac Address*</label>
         <input type="text" name="mac_address" value="{{$row->mac_address}}"  class="form-control" required>
     </div>
+    @if($row->ip_address)
     <div class="col-md-12 mb-2">
         <label for="">IP yang ingin diakses*</label>
-        <textarea name="ip_address" cols="30" rows="3" class="form-control">{{$row->ip_address}}</textarea>
+        <textarea name="ip_address" cols="30" rows="3" class="form-control">{{$akses->ip_address}}</textarea>
     </div>
+    @endif
+
+    <div class="col-md-12 mb-4">
+        <label for="">File</label><br/>
+        <button class="btn btn-light btn-pdf mb-2" data-file="{{url('')}}/uploads/{{$akses->nda}}"  data-title="Nota Dinas" type="button">Lihat File</button><br/>
+        @if($request->status == 'Ditolak')
+        <label for="">Ganti File</label>
+        <input type="file" name="nda" class="form-control" accept="application/pdf" max-size="2048">
+        @endif
+    </div>
+
     @endforeach
     @else
     <hr class="mt-4">
@@ -110,4 +122,5 @@
     </tbody>
 </table>
 @endif
+
 </div>
