@@ -50,7 +50,7 @@ class RequestController extends Controller{
 
     public function showRequestList(Request $request){
         
-        $data['request'] = Req::with('user')->with('pelaksana')->with('layanan.fields')->with('meta')->get();
+        //$data['request'] = Req::with('user')->with('pelaksana')->with('layanan.fields')->with('meta')->get();
         $data['layanan'] = Layanan::where('status', 1)->get();
         $data['pelaksana'] = User::where('role', '!=', 'kasi')->where('role', '!=', 'kabid')->where('role', '!=', 'pemohon')->where('role', '!=', '')->get();
         
