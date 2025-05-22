@@ -32,6 +32,8 @@ use File;
 use App\Events\Notification as Notif;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserNotification;
 
 class RequestController extends Controller{
 
@@ -729,6 +731,7 @@ class RequestController extends Controller{
         DB::transaction(function() use($data){
             $catatan = Catatan::create($data);
             $req = Req::find($data['id_request']);
+            $user = User::where('id', $req->user_id)->first();
 
             if($data['status'] == 'Sedang Diproses' && $req->status == 'Sedang Diproses'){
                 $data['tahapan'] = 'Sedang Diproses';
@@ -755,6 +758,16 @@ class RequestController extends Controller{
                 'id_user' => $req->user_id,
                 'status' => 0
             ]);
+
+        
+            $details = [
+                'url' => $url,
+                'message' => $pesan,
+                'notes' => $data['pesan'],
+                'nomor' => $req->no_req,
+            ];
+
+            $kirim = Mail::to('imamnurhidayat6@gmail.com')->send(new UserNotification($details));
         });
 
         Alert::success('Berhasil merubah status request!');
@@ -805,6 +818,10 @@ class RequestController extends Controller{
                 'id_user' => $tujuan->id,
                 'status' => 0
             ]);
+
+            
+    
+            
         });
 
         Alert::success('Request berhasil disetujui!');
@@ -821,6 +838,11 @@ class RequestController extends Controller{
             $req = Req::find($data['id_request']);
             $req->fill($data);
             $req->save();
+
+            $user = User::where('id', $req->user_id)->first();
+
+            //dd($data['pesan']);
+
 
             $pesan = 'Request #'.$req->no_req.' ditolak';
             $judul = 'Pesan Baru';
@@ -839,6 +861,15 @@ class RequestController extends Controller{
                 'id_user' => $req->user_id,
                 'status' => 0
             ]);
+
+            $details = [
+                'url' => $url,
+                'message' => $pesan,
+                'notes' => $data['pesan'],
+                'nomor' => $req->no_req,
+            ];
+
+            $kirim = Mail::to('imamnurhidayat6@gmail.com')->send(new UserNotification($details));
             
         });
 
